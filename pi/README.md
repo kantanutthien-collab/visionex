@@ -8,7 +8,7 @@ the dashboard over HTTP.
 
 ```bash
 sudo apt update && sudo apt install -y python3-picamera2 python3-venv git
-cd ~ && git clone <your repo> visionex && cd visionex/pi
+cd ~ && git clone https://github.com/kantanutthien-collab/visionex.git && cd visionex/pi
 python3 -m venv --system-site-packages .venv
 source .venv/bin/activate
 pip install -r requirements.txt        # ultralytics pulls in PyTorch, takes a few minutes

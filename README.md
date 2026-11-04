@@ -2,6 +2,8 @@
 
 School innovation project, Bangkok Christian College.
 
+**Live:** https://bccvisionex.vercel.app · **Code:** https://github.com/kantanutthien-collab/visionex
+
 ## Run locally
 
 ```bash
@@ -25,7 +27,7 @@ git init
 git add .
 git commit -m "VisionEx dashboard"
 git branch -M main
-git remote add origin https://github.com/<your-user>/visionex.git
+git remote add origin https://github.com/kantanutthien-collab/visionex.git
 git push -u origin main
 ```
 
