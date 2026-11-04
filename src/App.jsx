@@ -46,6 +46,13 @@ export default function App() {
   const [animalOv, setAnimalOv] = useState(() => loadJSON(LS.animals, EMPTY_OV));
   const [cameraOv, setCameraOv] = useState(() => loadJSON(LS.cameras, EMPTY_OV));
   // The app starts EMPTY: the sample zoo (ANIMALS / CAMERAS from mock.js) is only loaded on request via loadDemo()
+  // First visit (nothing saved yet): start with 3 example animals + their cameras so the app is not empty.
+  // "Remove all" clears them and remembers that choice.
+  const STARTER = ['giraffe', 'elephant', 'lion'];
+  const firstVisit = !localStorage.getItem(LS.animals);
+  const starterOv = () => ({ edits: {}, added: ANIMALS.filter(a => STARTER.includes(a.id)).map(a => ({ ...a })), removed: [] });
+  const starterCamOv = () => ({ edits: {}, added: CAMERAS.filter(c => ANIMALS.filter(a => STARTER.includes(a.id)).some(a => a.camera === c.id)).map(c => ({ ...c })), removed: [] });
+  if (firstVisit) { localStorage.setItem(LS.animals, JSON.stringify(starterOv())); localStorage.setItem(LS.cameras, JSON.stringify(starterCamOv())); }
   const [animals, setAnimals] = useState(() => { const list = applyOv([], loadJSON(LS.animals, EMPTY_OV)); list.forEach(ensureDefaults); return list; });
   const [cameras, setCameras] = useState(() => applyOv([], loadJSON(LS.cameras, EMPTY_OV)));
   const [selected, setSelected] = useState(() => applyOv([], loadJSON(LS.animals, EMPTY_OV))[0]?.id || null);
