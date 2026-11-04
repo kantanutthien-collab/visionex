@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+.vercel
+pi/.venv
+pi/__pycache__
+pi/data/*.json
+*.pt

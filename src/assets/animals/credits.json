@@ -1,0 +1,58 @@
+{
+  "giraffe": {
+    "file": "Giraffe_Mikumi_National_Park.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Giraffe_Mikumi_National_Park.jpg",
+    "artist": "Muhammad Mahdi Karim",
+    "license": "GFDL 1.2",
+    "ext": "jpg"
+  },
+  "elephant": {
+    "file": "Elephas_maximus_(Bandipur).jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Elephas_maximus_(Bandipur).jpg",
+    "artist": "Yathin S Krishnappa",
+    "license": "CC BY-SA 3.0",
+    "ext": "jpg"
+  },
+  "lion": {
+    "file": "020_The_lion_king_Snyggve_in_the_Serengeti_National_Park_Photo_by_Giles_Laurent.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:020_The_lion_king_Snyggve_in_the_Serengeti_National_Park_Photo_by_Giles_Laurent.jpg",
+    "artist": "Giles Laurent",
+    "license": "CC BY-SA 4.0",
+    "ext": "jpg"
+  },
+  "monkey": {
+    "file": "Ubud_Monkey_Family.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Ubud_Monkey_Family.jpg",
+    "artist": "Deerpeter",
+    "license": "CC BY-SA 4.0",
+    "ext": "jpg"
+  },
+  "penguin": {
+    "file": "Humboldt_Penguin,_Chiloé,_CL-LL,_CL_imported_from_iNaturalist_photo_384752139.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Humboldt_Penguin%2C_Chilo%C3%A9%2C_CL-LL%2C_CL_imported_from_iNaturalist_photo_384752139.jpg",
+    "artist": "Christoph Moning",
+    "license": "CC BY 4.0",
+    "ext": "jpg"
+  },
+  "tiger": {
+    "file": "Panthera_tigris_corbetti_01.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Panthera_tigris_corbetti_01.jpg",
+    "artist": "H. Zell",
+    "license": "CC BY-SA 3.0",
+    "ext": "jpg"
+  },
+  "zebra": {
+    "file": "Equus_quagga_burchellii_-_Etosha,_2014.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Equus_quagga_burchellii_-_Etosha%2C_2014.jpg",
+    "artist": "Yathin S Krishnappa",
+    "license": "CC BY-SA 3.0",
+    "ext": "jpg"
+  },
+  "otter": {
+    "file": "Otter_-_melbourne_zoo.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Otter_-_melbourne_zoo.jpg",
+    "artist": "fir0002 / flagstaffotos",
+    "license": "GFDL 1.2",
+    "ext": "jpg"
+  }
+}

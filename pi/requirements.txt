@@ -1,0 +1,5 @@
+flask>=3.0
+numpy
+opencv-python-headless>=4.8
+ultralytics>=8.2
+# picamera2 comes from Raspberry Pi OS (sudo apt install -y python3-picamera2); create the venv with --system-site-packages

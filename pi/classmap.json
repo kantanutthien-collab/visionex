@@ -1,0 +1,16 @@
+{
+  "_comment": "YOLO class name -> animal id used by the dashboard. The standard COCO model only knows giraffe, zebra, elephant, bear, bird, cat, dog... Train a custom model (see README) for lions, tigers, monkeys, penguins, otters and use its class names here.",
+  "giraffe": "giraffe",
+  "zebra": "zebra",
+  "elephant": "elephant",
+  "bird": "penguin",
+  "cat": "lion",
+  "bear": "otter",
+  "dog": "monkey",
+  "lion": "lion",
+  "tiger": "tiger",
+  "monkey": "monkey",
+  "macaque": "monkey",
+  "penguin": "penguin",
+  "otter": "otter"
+}

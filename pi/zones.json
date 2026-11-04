@@ -1,0 +1,6 @@
+{
+  "_comment": "Optional. Feeding / water areas per animal id, as fractions of the frame (0..1). An animal standing still inside 'feed' counts as eating, inside 'water' as drinking.",
+  "lion":    { "feed": { "x": 0.05, "y": 0.55, "w": 0.25, "h": 0.4 } },
+  "giraffe": { "feed": { "x": 0.6,  "y": 0.0,  "w": 0.4,  "h": 0.5 } },
+  "otter":   { "water": { "x": 0.0, "y": 0.5,  "w": 1.0,  "h": 0.5 } }
+}

@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { @apply bg-ground text-ink font-sans antialiased; background-image: linear-gradient(rgba(46,134,222,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(46,134,222,.055) 1px,transparent 1px); background-size: 32px 32px; }
+.card { @apply bg-white rounded-2xl shadow-card; }
+.corner { @apply absolute w-3 h-3 border-ocean opacity-50; }
+.seg { @apply flex gap-1 bg-[#EEF2F7] rounded-[10px] p-[3px]; }
+.seg button { @apply px-3 py-[7px] rounded-lg text-[13px] font-semibold text-muted transition-all; }
+.seg button.on { @apply bg-white text-navy shadow-sm; }
+.mono { @apply font-mono; }
+@media print { aside, header, .print\:hidden { display: none !important; } body { background: #fff; } .card { box-shadow: none; border: 1px solid #DDE4EE; } }
