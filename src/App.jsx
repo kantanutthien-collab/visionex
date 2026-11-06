@@ -285,7 +285,7 @@ export default function App() {
   // ---------------- GUEST MODE: no sidebar, one friendly page ----------------
   if (mode === 'guest') return (
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-10 bg-white/90 backdrop-blur-md border-b border-[#E3E9F1] px-4 sm:px-5 py-2.5 flex items-center gap-2 sm:gap-3 flex-wrap">
+      <header className="topbar relative sticky top-0 z-10 px-4 sm:px-5 pt-3.5 pb-2.5 flex items-center gap-2 sm:gap-3 flex-wrap">
         <img src={logoWide} alt="VisionEx" className="h-10 w-auto block" />
         <div className="flex-1 min-w-[140px]"><div className="text-[18px] font-bold leading-tight">{t.guestTitle}</div><div className="text-xs text-muted">{t.guestSub}</div></div>
         <div className="hidden sm:flex items-center gap-2.5 px-3.5 py-2 rounded-[10px] border border-line bg-white font-mono text-xs text-[#4A5A70]"><span className="font-semibold text-navy tabular-nums">{hms(now)}</span><span className="text-[#B9C4D3]">|</span><span>{dateStr}</span></div>
@@ -297,22 +297,22 @@ export default function App() {
 
   // ---------------- ADMIN MODE: 3 main tabs + sub-tabs ----------------
   const CatTab = ({ c, big }) => { const [k, Icon, label, sub] = c; const on = cat === k; return (
-    <button onClick={() => go(c[4][0][0])} className={`relative flex ${big ? 'flex-col gap-0.5 py-2' : 'items-center gap-2 px-4 py-2'} rounded-xl text-sm font-bold transition ${on ? 'bg-navy text-white shadow' : 'text-[#4A5A70] hover:bg-[#EEF2F7]'}`}>
+    <button onClick={() => go(c[4][0][0])} className={`relative flex ${big ? 'flex-col gap-0.5 py-2' : 'items-center gap-2 px-4 py-2'} rounded-xl text-sm font-bold transition ${on ? (big ? 'bg-white text-navy shadow' : 'bg-navy text-white shadow') : (big ? 'text-white/75' : 'text-[#4A5A70] hover:bg-white')}`}>
       <Icon size={big ? 22 : 18} /><span className={big ? 'text-[12px]' : ''}>{label}</span>
       {catBadge[k] > 0 && <span className={`${big ? 'absolute top-0.5 right-1/4' : ''} min-w-[20px] h-[20px] px-1.5 rounded-full bg-[#E74C3C] text-white text-[11px] font-bold grid place-items-center`}>{catBadge[k]}</span>}
     </button>); };
   const curCat = CATS.find(c => c[0] === cat);
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-10 bg-white/95 backdrop-blur-md border-b border-[#E3E9F1] px-4 md:px-6 py-2.5 flex items-center gap-3 flex-wrap print:hidden">
+      <header className="topbar relative sticky top-0 z-10 px-4 md:px-6 pt-3.5 pb-2.5 flex items-center gap-3 flex-wrap print:hidden">
         <img src={mobile ? logoMark : logoWide} alt="VisionEx" className="h-10 w-auto block" />
-        {!mobile && <nav className="flex gap-1 bg-[#F4F7FB] rounded-2xl p-1 border border-[#E3E9F1]">{CATS.map(c => <CatTab key={c[0]} c={c} />)}</nav>}
+        {!mobile && <nav className="flex gap-1 bg-[#E3EAF3] rounded-2xl p-1 border border-[#D3DEEB]">{CATS.map(c => <CatTab key={c[0]} c={c} />)}</nav>}
         <div className="flex-1" />
         {liveOn && <span className="px-2 py-1 rounded-md text-[10px] font-bold tracking-[.1em] bg-[#FF5252] text-white">{t.piLiveData}</span>}
         <button onClick={simulate} title={t.simulate} className={mobile ? 'flex items-center gap-1.5 h-10 px-3 rounded-[10px] bg-white border-2 border-[#CFE0F5] text-ocean text-sm font-bold' : 'flex items-center gap-2 px-3.5 py-2 rounded-[10px] bg-ocean hover:bg-[#1B6FC4] text-white text-sm font-semibold transition'}><Zap size={16} />{mobile ? t.demo : t.simulate}</button>
         {!mobile && <><LangSeg /><ModeSeg /></>}
       </header>
-      <div className="sticky top-[57px] md:top-[61px] z-[9] bg-white/90 backdrop-blur-md border-b border-[#E3E9F1] px-4 md:px-6 py-2 flex gap-2 overflow-x-auto [scrollbar-width:none] print:hidden">
+      <div className="sticky top-[61px] md:top-[65px] z-[9] backdrop-blur-md border-b px-4 md:px-6 py-2 flex gap-2 overflow-x-auto [scrollbar-width:none] print:hidden" style={{ background: `linear-gradient(90deg, ${pageColor}26, ${pageColor}0D 60%, rgba(255,255,255,.75))`, borderColor: pageColor + '33' }}>
         {curCat[4].map(([k, Icon, label]) => { const on = page === k || (page === 'profile' && k === 'overview'); const col = PAGE_COLOR[k]; return (
           <button key={k} onClick={() => go(k)} className="flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-bold whitespace-nowrap border-2 transition" style={on ? { background: col, borderColor: col, color: '#fff' } : { borderColor: col + '55', color: col, background: '#fff' }}>
             <Icon size={15} />{label}{pageBadge[k] > 0 && <span className={`min-w-[18px] h-[18px] px-1 rounded-full text-[10px] grid place-items-center ${on ? 'bg-white/25 text-white' : 'bg-[#E74C3C] text-white'}`}>{pageBadge[k]}</span>}
@@ -326,10 +326,10 @@ export default function App() {
           <span className="text-sm font-bold whitespace-nowrap">{t.prOpenAlerts} →</span>
         </button>); })()}
       <main className={`flex-1 w-full max-w-[1400px] mx-auto p-4 md:p-6 flex flex-col gap-5 md:gap-6 min-w-0 print:p-0 ${mobile ? 'pb-24' : ''}`}>
-        <div className="text-[20px] md:text-[22px] font-bold leading-tight -mb-2" style={{ color: pageColor }}>{titles[page]?.[0]}</div>
+        <div className="flex items-center gap-3 -mb-1"><span className="w-10 h-10 rounded-xl grid place-items-center text-white shadow-md flex-none" style={{ background: `linear-gradient(135deg, ${pageColor}, ${pageColor}B3)` }}>{PageIcon && <PageIcon size={20} />}</span><div className="min-w-0"><div className="text-[20px] md:text-[22px] font-bold leading-tight" style={{ color: pageColor }}>{titles[page]?.[0]}</div>{titles[page]?.[1] && <div className="text-[12px] text-muted leading-tight truncate">{titles[page][1]}</div>}</div></div>
         <Page {...ctx} />
       </main>
-      {mobile && <nav className="fixed bottom-0 inset-x-0 z-20 bg-white border-t border-[#E3E9F1] grid grid-cols-3 px-2 py-1.5 shadow-[0_-4px_16px_rgba(15,42,74,.08)] print:hidden">{CATS.map(c => <CatTab key={c[0]} c={c} big />)}</nav>}
+      {mobile && <nav className="fixed bottom-0 inset-x-0 z-20 bg-gradient-to-r from-navy to-[#173A63] grid grid-cols-3 gap-1 px-2 py-1.5 shadow-[0_-6px_20px_rgba(15,42,74,.25)] print:hidden">{CATS.map(c => <CatTab key={c[0]} c={c} big />)}</nav>}
       <Toast />
     </div>
   );
