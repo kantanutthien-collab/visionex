@@ -9,10 +9,8 @@ body {
   background-image:
     radial-gradient(1100px 620px at -5% -10%, #C3DBF8 0%, rgba(195,219,248,0) 60%),
     radial-gradient(900px 560px at 105% -5%, #C8ECD8 0%, rgba(200,236,216,0) 58%),
-    radial-gradient(1000px 640px at 50% 115%, #F9E1C2 0%, rgba(249,225,194,0) 60%),
-    radial-gradient(rgba(15,42,74,.07) 1px, transparent 1.2px);
-  background-size: auto, auto, auto, 22px 22px;
-  background-attachment: fixed, fixed, fixed, scroll;
+    radial-gradient(1000px 640px at 50% 115%, #F9E1C2 0%, rgba(249,225,194,0) 60%);
+  background-attachment: fixed;
 }
 .card { @apply rounded-2xl shadow-card; background: linear-gradient(180deg, #FFFFFF 0%, #FAFCFF 100%); border: 1px solid rgba(15,42,74,.09); }
 .topbar { background: linear-gradient(90deg, #FFFFFF 0%, #F2F8FF 55%, #ECF5FF 100%); box-shadow: 0 2px 14px rgba(15,42,74,.08); border-bottom: 1px solid #D9E4F0; }
@@ -23,3 +21,10 @@ body {
 .seg button.on { @apply bg-white text-navy shadow-sm; }
 .mono { @apply font-mono; }
 @media print { aside, header, .print\:hidden { display: none !important; } body { background: #fff; } .card { box-shadow: none; border: 1px solid #DDE4EE; } }
+
+/* ลวดลาย: paw prints, leaves and little suns tiled faintly behind everything */
+body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: url('./assets/motif-dark.svg') 0 0/240px 240px; opacity: .075; }
+.topbar::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: url('./assets/motif-dark.svg') 0 0/200px 200px; opacity: .07; }
+/* .motif sits behind the content of any host that has its own stacking context (z-index or .isolate) */
+.motif { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: url('./assets/motif-dark.svg') 0 0/200px 200px; opacity: .09; }
+.motif-light { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: url('./assets/motif-light.svg') 0 0/180px 180px; opacity: .13; }

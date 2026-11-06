@@ -55,8 +55,8 @@ export default function Guest({ t, L, tx, animals, cameras, camera, selectCamera
   // ---------------- landing: choose an animal ----------------
   if (!a) return (
     <div className="flex flex-col gap-6 animate-fadeIn">
-      <div className="rounded-[22px] bg-gradient-to-br from-navy to-[#1B4F86] text-white px-7 py-7 relative overflow-hidden">
-        <div className="absolute -right-10 -top-10 w-56 h-56 rounded-full bg-ocean/30 blur-2xl" />
+      <div className="rounded-[22px] bg-gradient-to-br from-navy to-[#1B4F86] text-white px-7 py-7 relative isolate overflow-hidden">
+        <i className="motif-light" /><div className="absolute -right-10 -top-10 w-56 h-56 rounded-full bg-ocean/30 blur-2xl" />
         <div className="relative">
           <div className="font-mono text-[11px] tracking-[.14em] text-[#9CC4E4] uppercase flex items-center gap-2"><Sparkles size={14} /> {t.guestNow} · {clock}</div>
           <div className="text-[28px] font-bold leading-tight mt-1">{t.guestChoose}</div>

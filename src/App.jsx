@@ -312,7 +312,7 @@ export default function App() {
         <button onClick={simulate} title={t.simulate} className={mobile ? 'flex items-center gap-1.5 h-10 px-3 rounded-[10px] bg-white border-2 border-[#CFE0F5] text-ocean text-sm font-bold' : 'flex items-center gap-2 px-3.5 py-2 rounded-[10px] bg-ocean hover:bg-[#1B6FC4] text-white text-sm font-semibold transition'}><Zap size={16} />{mobile ? t.demo : t.simulate}</button>
         {!mobile && <><LangSeg /><ModeSeg /></>}
       </header>
-      <div className="sticky top-[61px] md:top-[65px] z-[9] backdrop-blur-md border-b px-4 md:px-6 py-2 flex gap-2 overflow-x-auto [scrollbar-width:none] print:hidden" style={{ background: `linear-gradient(90deg, ${pageColor}26, ${pageColor}0D 60%, rgba(255,255,255,.75))`, borderColor: pageColor + '33' }}>
+      <div className="relative sticky top-[61px] md:top-[65px] z-[9] backdrop-blur-md border-b px-4 md:px-6 py-2 flex gap-2 overflow-x-auto [scrollbar-width:none] print:hidden" style={{ background: `linear-gradient(90deg, ${pageColor}26, ${pageColor}0D 60%, rgba(255,255,255,.75))`, borderColor: pageColor + '33' }}><i className="motif" style={{ opacity: .07 }} />
         {curCat[4].map(([k, Icon, label]) => { const on = page === k || (page === 'profile' && k === 'overview'); const col = PAGE_COLOR[k]; return (
           <button key={k} onClick={() => go(k)} className="flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-bold whitespace-nowrap border-2 transition" style={on ? { background: col, borderColor: col, color: '#fff' } : { borderColor: col + '55', color: col, background: '#fff' }}>
             <Icon size={15} />{label}{pageBadge[k] > 0 && <span className={`min-w-[18px] h-[18px] px-1 rounded-full text-[10px] grid place-items-center ${on ? 'bg-white/25 text-white' : 'bg-[#E74C3C] text-white'}`}>{pageBadge[k]}</span>}
@@ -329,7 +329,7 @@ export default function App() {
         <div className="flex items-center gap-3 -mb-1"><span className="w-10 h-10 rounded-xl grid place-items-center text-white shadow-md flex-none" style={{ background: `linear-gradient(135deg, ${pageColor}, ${pageColor}B3)` }}>{PageIcon && <PageIcon size={20} />}</span><div className="min-w-0"><div className="text-[20px] md:text-[22px] font-bold leading-tight" style={{ color: pageColor }}>{titles[page]?.[0]}</div>{titles[page]?.[1] && <div className="text-[12px] text-muted leading-tight truncate">{titles[page][1]}</div>}</div></div>
         <Page {...ctx} />
       </main>
-      {mobile && <nav className="fixed bottom-0 inset-x-0 z-20 bg-gradient-to-r from-navy to-[#173A63] grid grid-cols-3 gap-1 px-2 py-1.5 shadow-[0_-6px_20px_rgba(15,42,74,.25)] print:hidden">{CATS.map(c => <CatTab key={c[0]} c={c} big />)}</nav>}
+      {mobile && <nav className="fixed bottom-0 inset-x-0 z-20 bg-gradient-to-r from-navy to-[#173A63] grid grid-cols-3 gap-1 px-2 py-1.5 shadow-[0_-6px_20px_rgba(15,42,74,.25)] print:hidden"><i className="motif-light" style={{ opacity: .1 }} />{CATS.map(c => <CatTab key={c[0]} c={c} big />)}</nav>}
       <Toast />
     </div>
   );
