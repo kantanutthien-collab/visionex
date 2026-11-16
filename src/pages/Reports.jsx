@@ -26,7 +26,7 @@ export default function Reports({ t, L, tx, animals, alerts, log, now, openProfi
       <div className="grid grid-cols-[repeat(auto-fill,minmax(min(360px,100%),1fr))] gap-5">
         {animals.map(a => {
           const st = statusOf(a.health), ss = STATUS_STYLE[st], mv = activeHours(a), rs = a.resting[6], hab = HABITATS_ACTIVE.find(h => h.animals.includes(a.id));
-          const chips = [[t.eating, trend(a.eating, true)], [t.activity, trend(a.activity, true)], [t.resting, trend(a.resting, true)], [t.pacing, stressTrend(a)]];
+          const chips = [[t.eating, trend(a.eating, true)], [t.drinking, trend(a.drinking, true)], [t.resting, trend(a.resting, true)], [t.playing, trend(a.playing, true)], [t.activity, trend(a.activity, true)], [t.pacing, stressTrend(a)]];
           const myAlerts = todayAlerts.filter(x => x.animalId === a.id);
           return (
             <Card key={a.id} className="!rounded-[18px] overflow-hidden break-inside-avoid">

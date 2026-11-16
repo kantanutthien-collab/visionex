@@ -1,7 +1,7 @@
 """Behaviour classification + daily statistics for VisionEx.
 
 Takes YOLO detections (with tracker ids) frame by frame and decides, per animal:
-resting / walking / pacing / eating / drinking.  Everything is in frame fractions (0..1)
+resting / walking / playing / pacing / eating / drinking.  Everything is in frame fractions (0..1)
 so it works for any camera resolution.
 """
 import json, os, time
@@ -10,6 +10,7 @@ from datetime import date, timedelta
 
 MOVE_SPEED = 0.04        # frame-widths per second above which the animal counts as moving
 PACING_REVERSALS = 3     # direction changes within PACING_WINDOW seconds → pacing
+PLAY_SPEED = 0.25        # frame-widths per second: faster than this (and not pacing) counts as playing
 PACING_WINDOW = 30
 STALE_AFTER = 5          # seconds without detection before a track is forgotten
 
@@ -53,6 +54,8 @@ class BehaviorTracker:
                 beh = 'drinking'
             elif moving and len(tr['rev']) >= PACING_REVERSALS:
                 beh = 'pacing'
+            elif moving and speed > PLAY_SPEED:
+                beh = 'playing'
             elif moving:
                 beh = 'walking'
             else:
@@ -114,15 +117,17 @@ class DailyStats:
         ids = {aid for day in per_day for aid in day}
         out = {}
         for aid in ids:
-            eating, activity, resting, pacing = [], [], [], []
+            eating, drinking, playing, activity, resting, pacing = [], [], [], [], [], []
             for day in per_day:
                 r = day.get(aid); s = (r or {}).get('seconds', {}); obs = (r or {}).get('observed', 0) or 1
                 moving = s.get('walking', 0) + s.get('pacing', 0) + s.get('playing', 0)
                 eating.append(round(s.get('eating', 0) / 60, 1))                       # minutes at the feeder
+                drinking.append(round(s.get('drinking', 0) / 60, 1))                   # minutes at the water
+                playing.append(round(s.get('playing', 0) / 60, 1))                     # minutes moving fast
                 activity.append(round(100 * moving / obs) if r else 0)                 # % of observed time moving
                 resting.append(round(s.get('resting', 0) / 3600, 1))                   # hours resting
                 pacing.append(int((r or {}).get('pacingEpisodes', 0)))
             avg_p = sum(pacing[:6]) / 6
             emotion = 'stressed' if pacing[6] >= 3 and pacing[6] >= 2 * max(avg_p, 0.5) else 'playful' if activity[6] >= 60 else 'calm'
-            out[aid] = {'eating': eating, 'activity': activity, 'resting': resting, 'pacing': pacing, 'emotion': emotion, 'days': days}
+            out[aid] = {'eating': eating, 'drinking': drinking, 'playing': playing, 'activity': activity, 'resting': resting, 'pacing': pacing, 'emotion': emotion, 'days': days}
         return out

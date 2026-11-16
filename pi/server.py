@@ -10,7 +10,7 @@ camera  ->  YOLOv8 detection + tracking  ->  behaviour (behavior.py)  ->  HTTP A
 
 Endpoints (CORS enabled, so the dashboard in a browser can read them):
   GET /api/state     current detections, behaviours, recent events, fps, system info
-  GET /api/animals   7-day statistics per animal (eating, activity, resting, pacing) + emotion
+  GET /api/animals   7-day statistics per animal (eating, drinking, playing, resting in time per day; activity, pacing) + emotion
   GET /stream        MJPEG video with boxes drawn
   GET /snapshot.jpg  latest annotated frame
 """

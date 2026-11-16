@@ -6,6 +6,14 @@ export const STATUS_STYLE = { healthy: { bg: '#E8F8EF', color: '#1F8A4C' }, watc
 export const SEV_STYLE = { info: { bg: '#E8F1FC', color: '#2E86DE' }, warning: { bg: '#FDF1E6', color: '#E67E22' }, urgent: { bg: '#FDEAEA', color: '#E74C3C' } };
 export const CODES = { giraffe: 'GR-01', elephant: 'EL-01', lion: 'LN-01', monkey: 'MK-04', penguin: 'PG-05', tiger: 'TG-02', zebra: 'ZB-03', otter: 'OT-01' };
 
+// Home camera wall: green = normal, yellow = almost (watch), red = danger
+export function boxStatus(a, alerts = []) {
+  const open = alerts.filter(x => !x.handled && x.animalId === a.id), st = statusOf(a.health);
+  if (st === 'attention' || a.emotion === 'stressed' || a.emotion === 'agitated' || open.some(x => x.severity === 'urgent')) return 'danger';
+  if (st === 'watch' || open.some(x => x.severity === 'warning')) return 'watch';
+  return 'ok';
+}
+export const BOX_STYLE = { ok: { color: '#27AE60', bg: '#E8F8EF' }, watch: { color: '#F59E0B', bg: '#FEF3C7' }, danger: { color: '#E74C3C', bg: '#FDEAEA' } };
 export const avg6 = arr => arr.slice(0, 6).reduce((a, b) => a + b, 0) / 6;
 export const pctOf = arr => { const a = avg6(arr); return a === 0 ? 0 : Math.round((arr[6] - a) / a * 100); };
 export const fmt = n => Number.isInteger(n) ? String(n) : n.toFixed(1);
@@ -77,6 +85,12 @@ export function history28(arr, key) {
   const r = seeded(strSeed(key)), av = avg6(arr), sd = Math.max(av * 0.07, 0.15), out = [];
   for (let i = 0; i < 21; i++) out.push(+Math.max(0, av + (r() - 0.5) * 2 * sd).toFixed(1));
   return out.concat(arr);
+}
+// Daily measures added later (drinking, playing): fill a plausible 7-day series for animals saved before they existed
+export function fillSeries(a, key) {
+  if (a.fromPi || !(a.activity || []).some(v => v > 0)) return [0, 0, 0, 0, 0, 0, 0];
+  const r = seeded(strSeed(a.id + key)), base = key === 'drinking' ? 8 + avg6(a.activity) * 0.1 : avg6(a.activity) * 0.5;
+  return Array.from({ length: 7 }, () => Math.round(base * (0.9 + r() * 0.2)));
 }
 export const weekly4 = series => [0, 1, 2, 3].map(w => { const s = series.slice(w * 7, w * 7 + 7); return +(s.reduce((a, b) => a + b, 0) / s.length).toFixed(1); });
 export function sensorHistory(s, key, n = 24) {

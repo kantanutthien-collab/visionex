@@ -1,5 +1,6 @@
+import { loadAiKey, saveAiKey } from '../lib/ai.js';
 import React, { useState } from 'react';
-import { Plus, Pencil, Trash2, Upload, RotateCcw, Camera, PawPrint, Cpu, Wifi, WifiOff } from 'lucide-react';
+import { Plus, Pencil, Trash2, Upload, RotateCcw, Camera, PawPrint, Cpu, Wifi, WifiOff, Sparkles } from 'lucide-react';
 import Photo from '../components/Photo.jsx';
 import { photoOf, focusOf, camSrc, fileToDataUrl, PHOTOS } from '../data/photos.js';
 import { Card } from '../components/ui.jsx';
@@ -8,13 +9,14 @@ const Field = ({ label, children }) => <label className="block text-xs text-mute
 const inp = 'w-full px-3 py-2 border border-line rounded-[10px] text-sm bg-[#FAFBFD] focus:outline-ocean text-ink';
 const slug = s => (s || 'animal').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'animal';
 const newAnimal = (cameras) => ({ id: '', emoji: '🐾', tint: '#E8F1FC', name: { th: '', en: '' }, species: { th: '', en: '' }, age: 1, enclosure: { th: '', en: '' }, emotion: 'calm', health: 90, minutesAgo: 1, camera: cameras[0]?.id || 0, code: '', photo: '',
-  eating: [5, 5, 5, 5, 5, 5, 5], activity: [65, 65, 65, 65, 65, 65, 65], resting: [8, 8, 8, 8, 8, 8, 8], pacing: [1, 1, 1, 1, 1, 1, 1], timeline: Array(12).fill('calm') });
+  eating: [5, 5, 5, 5, 5, 5, 5], activity: [65, 65, 65, 65, 65, 65, 65], resting: [8, 8, 8, 8, 8, 8, 8], pacing: [1, 1, 1, 1, 1, 1, 1], drinking: [10, 10, 10, 10, 10, 10, 10], playing: [30, 30, 30, 30, 30, 30, 30], timeline: Array(12).fill('calm') });
 const autoBoxes = (ids, animals) => ids.map((id, i) => { const a = animals.find(x => x.id === id); const w = Math.min(40, 80 / ids.length - 4); return { animalId: id, tag: `${a?.name.en || id} #${i + 1}`, conf: 90, x: 10 + i * (80 / ids.length), y: 20, w, h: 60 }; });
 // Add one box for a new animal in the emptiest third of the frame, keeping existing boxes untouched
 const addBox = (boxes, a) => { const slots = [6, 37, 68]; const used = boxes.map(b => b.x + b.w / 2); const x = slots.find(sx => !used.some(u => Math.abs(u - (sx + 13)) < 20)) ?? 37; return [...boxes, { animalId: a.id, tag: `${a.name.en || a.id} #${boxes.length + 1}`, conf: 90, x, y: 28, w: 26, h: 50 }]; };
 
 export default function Manage({ t, L, tx, animals, cameras, saveAnimal, deleteAnimal, saveCamera, deleteCamera, resetData, openProfile, piUrl, setPiUrl, live, loadDemo, clearAll, addExample }) {
   const [urlDraft, setUrlDraft] = useState(piUrl || '');
+  const [aiKey, setAiKey] = useState(loadAiKey); const [keyDraft, setKeyDraft] = useState(loadAiKey);
   const [more, setMore] = useState(false);
   const [edit, setEdit] = useState(null);   // { kind:'animal'|'camera', data, isNew }
   const [err, setErr] = useState('');
@@ -103,6 +105,14 @@ export default function Manage({ t, L, tx, animals, cameras, saveAnimal, deleteA
         {st === 'off' || urlDraft.trim() !== (piUrl || '') ? <button onClick={() => setPiUrl(urlDraft.trim())} className="flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] bg-ocean text-white text-sm font-semibold"><Wifi size={16} />{t.piConnect}</button>
           : <button onClick={() => { setPiUrl(''); setUrlDraft(''); }} className="flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] bg-[#EEF2F7] text-ink text-sm font-semibold"><WifiOff size={16} />{t.piDisconnect}</button>}
         <div className="w-full text-[13px] font-semibold flex items-center gap-2" style={{ color: stColor }}><span className="w-2.5 h-2.5 rounded-full" style={{ background: stColor }} />{stText}{st === 'online' && live.state && <span className="font-mono text-[11px] text-muted font-normal">· {live.state.fps} FPS</span>}</div>
+      </Card>
+      <Card className="!rounded-[18px] p-4 flex items-center gap-3 flex-wrap border-l-[6px]" style={{ borderColor: '#7C5CFC' }}>
+        <Sparkles size={22} className="text-[#7C5CFC]" />
+        <div className="font-bold text-[15px]">{t.aiKeyTitle}</div>
+        <input type="password" value={keyDraft} onChange={e => setKeyDraft(e.target.value)} placeholder="sk-ant-..." className={`flex-1 min-w-[200px] ${inp}`} />
+        {keyDraft.trim() && keyDraft.trim() !== aiKey ? <button onClick={() => { saveAiKey(keyDraft.trim()); setAiKey(keyDraft.trim()); }} className="px-4 py-2.5 rounded-[10px] bg-[#7C5CFC] text-white text-sm font-semibold">{t.aiKeySave}</button>
+          : aiKey ? <button onClick={() => { saveAiKey(''); setAiKey(''); setKeyDraft(''); }} className="px-4 py-2.5 rounded-[10px] bg-[#EEF2F7] text-ink text-sm font-semibold">{t.aiKeyClear}</button> : null}
+        <div className="w-full text-[13px] text-muted">{aiKey ? '✅ ' + t.aiKeySet + ' · ' : ''}{t.aiKeySub}</div>
       </Card>
       {form}
       <Card className="!rounded-[18px] p-5">

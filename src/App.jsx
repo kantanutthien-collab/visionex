@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { LayoutGrid, Video, ScanLine, PawPrint, Activity, Bell, Users, Info, Zap, X, FileText, Thermometer, Sparkles, ClipboardCheck, TrendingUp, Settings, Shield, Smile, HeartPulse } from 'lucide-react';
+import { LayoutGrid, Video, ScanLine, PawPrint, Activity, Bell, Users, Info, Zap, X, FileText, Thermometer, Sparkles, ClipboardCheck, TrendingUp, Settings, Shield, Smile, HeartPulse, HardHat, Tv, ArrowLeft } from 'lucide-react';
 import { ANIMALS, ALERTS, CAMERAS, BEHAVIOR_SEED, SIM_EVENTS, DEX, ENRICHMENT, HOURLY, OBSERVATIONS } from './data/mock.js';
 import { T, tx, GUEST, ADMIN } from './i18n.js';
-import { hms, matchDex, SEV_STYLE, seeded } from './lib/analysis.js';
+import { hms, matchDex, SEV_STYLE, seeded, fillSeries } from './lib/analysis.js';
+import { loadRecord, writeRecord } from './lib/record.js';
 import { loadTasks, saveTasks, buildTasks } from './lib/tasks.js';
 import { PAGE_COLOR } from './lib/colors.js';
 import { useLive, piCamera, PI_CAM_ID, cropFromPi, animalFromDetection } from './lib/live.js';
@@ -36,6 +37,7 @@ function ensureDefaults(a) {
   if (!DEX[a.id]) { const r = seeded(a.id.length * 7919); DEX[a.id] = { code: a.code, pattern: a.species, size: { th: '—', en: '—' }, coat: { th: '—', en: '—' }, mark: { th: 'ยังไม่ได้บันทึก', en: 'Not recorded yet' }, signature: Array.from({ length: 8 }, () => +(0.2 + r() * 0.7).toFixed(2)), accuracy: 88, sightings: 0 }; }
   if (!ENRICHMENT[a.id]) ENRICHMENT[a.id] = [{ th: 'ซ่อนอาหารให้ค้นหา', en: 'Hidden food to forage' }, { th: 'ของเล่นหรือวัตถุใหม่ในคอก', en: 'Novel object in the enclosure' }, { th: 'สลับตำแหน่งที่พักผ่อน', en: 'Rotate resting spots' }];
   if (!HOURLY[a.id]) HOURLY[a.id] = [55, 68, 74, 70, 60, 52, 48, 54, 64, 72, 72, 62, 52];
+  if (!a.drinking || !a.playing) { const m = ANIMALS.find(x => x.id === a.id); if (m) { a.eating = m.eating; a.drinking = m.drinking; a.playing = m.playing; } else { a.drinking = a.drinking || fillSeries(a, 'drinking'); a.playing = a.playing || fillSeries(a, 'playing'); } }
   if (!OBSERVATIONS[a.id]) OBSERVATIONS[a.id] = [];
 }
 
@@ -70,6 +72,9 @@ export default function App() {
   const [mobile, setMobile] = useState(window.innerWidth < 768);
   const [menuOpen, setMenuOpen] = useState(false);
   const [piUrl, setPiUrlState] = useState(() => loadJSON(LS.pi, ''));
+  const [record, setRecord] = useState(loadRecord);
+  useEffect(() => { setRecord(r => writeRecord(animals, new Date(), r)); }, [animals]);
+  const prevMode = useRef('worker');
   const setPiUrl = u => { setPiUrlState(u); localStorage.setItem(LS.pi, JSON.stringify(u)); };
   const live = useLive(piUrl);
   const liveOn = live.status === 'online';
@@ -122,7 +127,7 @@ export default function App() {
   }, [live.state, liveOn]);
   useEffect(() => {
     if (!liveOn || !live.animals) return;
-    setAnimals(as => as.map(a => { const la = live.animals[a.id]; if (!la) return a; const anyData = la.activity.some(v => v > 0) || la.resting.some(v => v > 0); return anyData ? { ...a, eating: la.eating, activity: la.activity, resting: la.resting, pacing: la.pacing, emotion: la.emotion, minutesAgo: 0, liveData: true } : a; }));
+    setAnimals(as => as.map(a => { const la = live.animals[a.id]; if (!la) return a; const anyData = la.activity.some(v => v > 0) || la.resting.some(v => v > 0); return anyData ? { ...a, eating: la.eating, drinking: la.drinking || a.drinking, playing: la.playing || a.playing, activity: la.activity, resting: la.resting, pacing: la.pacing, emotion: la.emotion, minutesAgo: 0, liveData: true } : a; }));
   }, [live.animals, liveOn]);
 
   const showToast = alert => { setToast(alert); clearTimeout(toastT.current); toastT.current = setTimeout(() => setToast(null), 6000); };
@@ -249,6 +254,8 @@ export default function App() {
     ['work', ClipboardCheck, t.catWork, t.catWorkSub, [['tasks', ClipboardCheck, t.navTasks, t.subTasks], ['reports', FileText, t.navReports, t.subReports], ['manage', Settings, t.navManage, t.subManage], ['visitors', Users, t.navVisitors, t.subVisitors], ['about', Info, t.navAbout, t.subAbout]]],
   ];
   const GROUPS = CATS.map(c => [c[2], c[4]]);
+  // Workers do not get the Add / Edit Animals tab
+  const CATS_VIS = mode === 'admin' ? CATS : CATS.map(c => [c[0], c[1], c[2], c[3], c[4].filter(s => s[0] !== 'manage')]);
   const catOf = pg => CATS.find(c => c[4].some(x => x[0] === pg))?.[0] || 'animals';
   const cat = catOf(page);
   const catBadge = { animals: 0, care: unhandled, work: tasks.pending };
@@ -261,15 +268,19 @@ export default function App() {
   const up = Math.max(0, Math.floor((now - new Date(now.getFullYear(), now.getMonth(), now.getDate(), 5, 30)) / 1000));
   const tele = { cpu: (41 + Math.round(Math.sin(sec / 5) * 6)) + '°C', esp: 'OK · ' + (3.28 + (sec % 7) / 100).toFixed(2) + 'V', fps: 24 + (sec % 3), ms: 38 + (sec % 5), uptime: Math.floor(up / 3600) + 'h ' + String(Math.floor(up % 3600 / 60)).padStart(2, '0') + 'm' };
 
-  const ctx = { t, L, tx: txL, animals, cameras: allCameras, alerts, piUrl, setPiUrl, live, liveOn, camera, selectCamera, log, openProfile, go, markHandled, selected, scan, startScan, sightings, lastSeen, now, clock: hms(now), tele, narrow, current, tasks, tasksPending: tasks.pending, toggleTask, addTask, saveAnimal, deleteAnimal, saveCamera, deleteCamera, resetData, loadDemo, clearAll, addExample };
+  const ctx = { t, L, tx: txL, animals, cameras: allCameras, alerts, piUrl, setPiUrl, live, liveOn, camera, selectCamera, log, openProfile, go, markHandled, selected, scan, startScan, sightings, lastSeen, now, clock: hms(now), tele, narrow, current, tasks, tasksPending: tasks.pending, toggleTask, addTask, saveAnimal, deleteAnimal, saveCamera, deleteCamera, resetData, loadDemo, clearAll, addExample, mode, record };
   const pages = { overview: Overview, live: LiveMonitor, dex: LiveDex, profile: Profile, health: Health, alerts: Alerts, visitors: Visitors, about: About, reports: Reports, habitat: Habitat, enrich: Enrichment, tasks: Tasks, history: History, manage: Manage };
   const Page = pages[page] || Overview;
 
+  // Worker = checks status and does tasks · Admin = can also edit animal data. The visitor screen is a separate display.
+  useEffect(() => { if (mode !== 'admin' && page === 'manage') go('overview'); }, [mode, page]);
   const ModeSeg = () => (
-    <div className="seg">
+    <div className="seg" title={t.roleHint}>
+      <button className={`flex items-center gap-1.5 ${mode === 'worker' ? 'on' : ''}`} onClick={() => setMode('worker')}><HardHat size={14} />{t.modeWorker}</button>
       <button className={`flex items-center gap-1.5 ${mode === 'admin' ? 'on' : ''}`} onClick={() => setMode('admin')}><Shield size={14} />{t.modeAdmin}</button>
-      <button className={`flex items-center gap-1.5 ${mode === 'guest' ? 'on' : ''}`} onClick={() => setMode('guest')}><Smile size={14} />{t.modeGuest}</button>
     </div>);
+  const VisitorBtn = () => <button onClick={() => { prevMode.current = mode; setMode('guest'); }} title={t.visitorScreen} className="flex items-center gap-1.5 h-10 px-3 rounded-[10px] bg-white border border-line text-[#4A5A70] text-[13px] font-semibold"><Tv size={15} /><span className="hidden lg:inline">{t.visitorScreen}</span></button>;
+  const BackBtn = () => <button onClick={() => setMode(prevMode.current === 'guest' ? 'worker' : prevMode.current)} className="flex items-center gap-1.5 h-10 px-3.5 rounded-[10px] bg-navy text-white text-sm font-semibold"><ArrowLeft size={15} />{t.backDash}</button>;
   const LangSeg = () => <div className="seg"><button className={L === 'th' ? 'on' : ''} onClick={() => setLang('th')}>ไทย</button><button className={L === 'en' ? 'on' : ''} onClick={() => setLang('en')}>EN</button></div>;
   const Toast = () => { if (!toast) return null; const a = animals.find(x => x.id === toast.animalId); if (!a) return null; const sv = SEV_STYLE[toast.severity]; return (
     <div className="fixed right-6 bottom-6 z-50 w-[360px] max-w-[calc(100vw-48px)] bg-white rounded-2xl shadow-[0_12px_40px_rgba(15,42,74,.22)] p-4 flex gap-3.5 items-start animate-toast border-t-4" style={{ borderColor: sv.color }}>
@@ -289,7 +300,7 @@ export default function App() {
         <img src={logoWide} alt="VisionEx" className="h-10 w-auto block" />
         <div className="flex-1 min-w-[140px]"><div className="text-[18px] font-bold leading-tight">{t.guestTitle}</div><div className="text-xs text-muted">{t.guestSub}</div></div>
         <div className="hidden sm:flex items-center gap-2.5 px-3.5 py-2 rounded-[10px] border border-line bg-white font-mono text-xs text-[#4A5A70]"><span className="font-semibold text-navy tabular-nums">{hms(now)}</span><span className="text-[#B9C4D3]">|</span><span>{dateStr}</span></div>
-        <LangSeg /><ModeSeg />
+        <LangSeg /><BackBtn />
       </header>
       <main className="flex-1 w-full max-w-[1200px] mx-auto p-4 sm:p-7"><Guest {...ctx} /></main>
     </div>
@@ -301,23 +312,23 @@ export default function App() {
       <Icon size={big ? 22 : 18} /><span className={big ? 'text-[12px]' : ''}>{label}</span>
       {catBadge[k] > 0 && <span className={`${big ? 'absolute top-0.5 right-1/4' : ''} min-w-[20px] h-[20px] px-1.5 rounded-full bg-[#E74C3C] text-white text-[11px] font-bold grid place-items-center`}>{catBadge[k]}</span>}
     </button>); };
-  const curCat = CATS.find(c => c[0] === cat);
+  const curCat = CATS_VIS.find(c => c[0] === cat) || CATS_VIS[0];
   return (
     <div className="min-h-screen flex flex-col">
       <header className="topbar relative sticky top-0 z-10 px-4 md:px-6 pt-3.5 pb-2.5 flex items-center gap-3 flex-wrap print:hidden">
         <img src={mobile ? logoMark : logoWide} alt="VisionEx" className="h-10 w-auto block" />
-        {!mobile && <nav className="flex gap-1 bg-[#E3EAF3] rounded-2xl p-1 border border-[#D3DEEB]">{CATS.map(c => <CatTab key={c[0]} c={c} />)}</nav>}
+        {!mobile && <nav className="flex gap-1 bg-[#E3EAF3] rounded-2xl p-1 border border-[#D3DEEB]">{CATS_VIS.map(c => <CatTab key={c[0]} c={c} />)}</nav>}
         <div className="flex-1" />
         {liveOn && <span className="px-2 py-1 rounded-md text-[10px] font-bold tracking-[.1em] bg-[#FF5252] text-white">{t.piLiveData}</span>}
         <button onClick={simulate} title={t.simulate} className={mobile ? 'flex items-center gap-1.5 h-10 px-3 rounded-[10px] bg-white border-2 border-[#CFE0F5] text-ocean text-sm font-bold' : 'flex items-center gap-2 px-3.5 py-2 rounded-[10px] bg-ocean hover:bg-[#1B6FC4] text-white text-sm font-semibold transition'}><Zap size={16} />{mobile ? t.demo : t.simulate}</button>
-        {!mobile && <><LangSeg /><ModeSeg /></>}
+        {!mobile && <><VisitorBtn /><LangSeg /><ModeSeg /></>}
       </header>
       <div className="relative sticky top-[61px] md:top-[65px] z-[9] backdrop-blur-md border-b px-4 md:px-6 py-2 flex gap-2 overflow-x-auto [scrollbar-width:none] print:hidden" style={{ background: `linear-gradient(90deg, ${pageColor}26, ${pageColor}0D 60%, rgba(255,255,255,.75))`, borderColor: pageColor + '33' }}><i className="motif" style={{ opacity: .07 }} />
         {curCat[4].map(([k, Icon, label]) => { const on = page === k || (page === 'profile' && k === 'overview'); const col = PAGE_COLOR[k]; return (
           <button key={k} onClick={() => go(k)} className="flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-bold whitespace-nowrap border-2 transition" style={on ? { background: col, borderColor: col, color: '#fff' } : { borderColor: col + '55', color: col, background: '#fff' }}>
             <Icon size={15} />{label}{pageBadge[k] > 0 && <span className={`min-w-[18px] h-[18px] px-1 rounded-full text-[10px] grid place-items-center ${on ? 'bg-white/25 text-white' : 'bg-[#E74C3C] text-white'}`}>{pageBadge[k]}</span>}
           </button>); })}
-        {mobile && <div className="flex gap-1.5 ml-auto pl-2 flex-none"><LangSeg /><ModeSeg /></div>}
+        {mobile && <div className="flex gap-1.5 ml-auto pl-2 flex-none"><VisitorBtn /><LangSeg /><ModeSeg /></div>}
       </div>
       {(() => { const urg = alerts.filter(a => !a.handled && a.severity === 'urgent'); if (!urg.length || page === 'alerts') return null; const a = animals.find(x => x.id === urg[0].animalId); if (!a) return null; return (
         <button onClick={() => go('alerts')} className="w-full text-left bg-[#E74C3C] text-white px-4 md:px-6 py-2.5 flex items-center gap-3 shadow-[0_4px_12px_rgba(231,76,60,.35)] print:hidden">
@@ -329,7 +340,7 @@ export default function App() {
         <div className="flex items-center gap-3 -mb-1"><span className="w-10 h-10 rounded-xl grid place-items-center text-white shadow-md flex-none" style={{ background: `linear-gradient(135deg, ${pageColor}, ${pageColor}B3)` }}>{PageIcon && <PageIcon size={20} />}</span><div className="min-w-0"><div className="text-[20px] md:text-[22px] font-bold leading-tight" style={{ color: pageColor }}>{titles[page]?.[0]}</div>{titles[page]?.[1] && <div className="text-[12px] text-muted leading-tight truncate">{titles[page][1]}</div>}</div></div>
         <Page {...ctx} />
       </main>
-      {mobile && <nav className="fixed bottom-0 inset-x-0 z-20 bg-gradient-to-r from-navy to-[#173A63] grid grid-cols-3 gap-1 px-2 py-1.5 shadow-[0_-6px_20px_rgba(15,42,74,.25)] print:hidden"><i className="motif-light" style={{ opacity: .1 }} />{CATS.map(c => <CatTab key={c[0]} c={c} big />)}</nav>}
+      {mobile && <nav className="fixed bottom-0 inset-x-0 z-20 bg-gradient-to-r from-navy to-[#173A63] grid grid-cols-3 gap-1 px-2 py-1.5 shadow-[0_-6px_20px_rgba(15,42,74,.25)] print:hidden"><i className="motif-light" style={{ opacity: .1 }} />{CATS_VIS.map(c => <CatTab key={c[0]} c={c} big />)}</nav>}
       <Toast />
     </div>
   );

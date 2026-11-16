@@ -55,5 +55,5 @@ export function animalFromDetection(det, count) {
   const id = det.animalId, label = cap(det.cls && det.cls !== 'demo' ? det.cls : id);
   return { id, emoji: EMOJI[id] || EMOJI[det.cls] || '🐾', tint: '#E8F1FC', name: { th: label, en: label }, species: { th: label, en: label }, age: 0,
     enclosure: { th: 'กล้อง Raspberry Pi', en: 'Raspberry Pi camera' }, emotion: 'calm', health: 90, minutesAgo: 0, camera: PI_CAM_ID, code: 'PI-' + String(count + 1).padStart(2, '0'), photo: '',
-    eating: [0, 0, 0, 0, 0, 0, 0], activity: [0, 0, 0, 0, 0, 0, 0], resting: [0, 0, 0, 0, 0, 0, 0], pacing: [0, 0, 0, 0, 0, 0, 0], timeline: Array(12).fill('calm'), fromPi: true };
+    eating: [0, 0, 0, 0, 0, 0, 0], activity: [0, 0, 0, 0, 0, 0, 0], resting: [0, 0, 0, 0, 0, 0, 0], pacing: [0, 0, 0, 0, 0, 0, 0], drinking: [0, 0, 0, 0, 0, 0, 0], playing: [0, 0, 0, 0, 0, 0, 0], timeline: Array(12).fill('calm'), fromPi: true };
 }

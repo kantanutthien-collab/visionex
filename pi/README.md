@@ -1,7 +1,7 @@
 # VisionEx on the Raspberry Pi 5
 
 This folder runs on the Pi. It reads the camera, finds animals with YOLOv8, decides what each one is
-doing (resting, walking, pacing, eating, drinking), keeps daily statistics, and serves everything to
+doing (resting, walking, playing, pacing, eating, drinking), keeps daily minutes per behaviour, and serves everything to
 the dashboard over HTTP.
 
 ## 1. Install (once)

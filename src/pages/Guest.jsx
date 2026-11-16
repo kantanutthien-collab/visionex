@@ -88,8 +88,8 @@ export default function Guest({ t, L, tx, animals, cameras, camera, selectCamera
   const cam = cameras.find(c => c.id === a.camera) || cameras.find(c => c.id === camera) || cameras[0];
   const st = statusOf(a.health), hc = hColor(a.health);
   const statusWord = st === 'healthy' ? t.guestDoingWell : st === 'watch' ? t.guestWatched : t.guestExtraCare;
-  const eat = pctOf(a.eating), act = pctOf(a.activity), rest = pctOf(a.resting), pa = avg6(a.pacing), paceUp = pa > 0 ? a.pacing[6] >= pa * 1.5 : a.pacing[6] > 1;
-  const checks = [[eat > -8, t.guestEatOk, t.guestEatLess, '🍃'], [act > -12, t.guestActOk, t.guestActLess, '🏃'], [Math.abs(rest) < 20, t.guestRestOk, t.guestRestOff, '💤'], [!paceUp, t.guestPaceOk, t.guestPaceMore, '🔄']];
+  const eat = pctOf(a.eating), drink = pctOf(a.drinking), playT = pctOf(a.playing), rest = pctOf(a.resting), pa = avg6(a.pacing), paceUp = pa > 0 ? a.pacing[6] >= pa * 1.5 : a.pacing[6] > 1;
+  const checks = [[eat > -8, t.guestEatOk, t.guestEatLess, '🍃'], [drink > -10, t.guestDrinkOk, t.guestDrinkLess, '💧'], [Math.abs(rest) < 20, t.guestRestOk, t.guestRestOff, '💤'], [playT > -15, t.guestPlayOk, t.guestPlayLess, '🎾'], [!paceUp, t.guestPaceOk, t.guestPaceMore, '🔄']];
   const sounds = SOUNDS[a.id] || GENERIC_SOUNDS;
   const play = i => { setPlaying(i); setTimeout(() => setPlaying(p => p === i ? null : p), 1800); };
   const label = (x, b) => { const dd = DOING[current[x.id]?.behavior || 'resting']; return { color: '#ffffff', node: <span className="px-2.5 py-1 rounded-full bg-white/95 text-[12px] font-semibold text-navy shadow-md">{tx(x.name)} · {dd.emoji} {dd[L]}</span> }; };

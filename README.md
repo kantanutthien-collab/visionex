@@ -42,12 +42,24 @@ In the dashboard open **Add / Edit Animals → Connect Raspberry Pi**, enter `ht
 When connected, Live Cameras shows the real feed with real boxes, the behaviour log comes from real detections,
 new animals the camera sees are added automatically, and the animals' 7-day statistics come from the Pi. If the Pi is unreachable the dashboard uses demo data.
 
-## Two modes (switch in the top bar)
+## Roles (switch in the top bar)
 
-- **Admin** (keepers / vets): full dashboard with grouped sidebar (on phones: menu button + drawer).
-- **Guest** (zoo visitors): first a "which animal would you like to visit?" page, then one page per animal with
-  Home button, live camera, health in plain words, and a "Talk to the animal" sound panel (template: labelled
-  sound buttons with meanings, no audio files yet). Works on phones.
+- **Worker** (keepers): checks status, alerts, health, enclosure conditions and the to-do list. Cannot edit animal data.
+- **Admin**: everything a worker sees plus **Add / Edit Animals** (animals, cameras, Raspberry Pi link, Claude API key).
+- **Visitor screen** (button in the top bar): a display for zoo guests. First a "which animal would you like to visit?"
+  page, then one page per animal with Home button, live camera, health in plain words, and a "Talk to the animal"
+  sound panel (template: labelled sound buttons with meanings, no audio files yet). "Back to dashboard" returns.
+
+## Daily record + AI analysis
+
+Every day the numbers for each animal (eating, drinking, sleep & rest, playing time, activity, pacing, health) are
+written to a daily record in the browser (`visionex-record`). Trends & History shows the record table with a CSV
+download, a bar chart per measure against the animal's 7-day usual, and **"What do these numbers mean?"**: an admin can
+enter a Claude API key (stored only on that device) and the page asks Claude (`claude-opus-5-5` via the official SDK)
+for a plain-language explanation; without a key, built-in rules give the same kind of summary.
+
+Home is a camera wall: one box per animal with its camera frame and a status colour (green normal, yellow almost,
+red danger). Tap a box to open that camera.
 
 ## Admin layout: 3 main tabs, sub-tabs inside
 

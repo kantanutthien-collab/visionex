@@ -19,8 +19,8 @@ export default function Profile({ t, L, tx, animals, selected, go, now, narrow }
   const name = tx(p.name), st = statusOf(p.health), hc = hColor(p.health);
   const dayLabels = L === 'th' ? ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'] : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
   const days = Array.from({ length: 7 }, (_, i) => { const d = new Date(now); d.setDate(d.getDate() - 6 + i); return dayLabels[d.getDay()]; });
-  const charts = [[t.eating, p.eating, t.kg, false], [t.activity, p.activity, t.idx, false], [t.resting, p.resting, t.hrs, false], [t.pacing, p.pacing, t.times, true]];
-  const compare = [[t.eating, p.eating, t.kg, true], [t.activity, p.activity, t.idx, true], [t.resting, p.resting, t.hrs, true], [t.pacing, p.pacing, t.times, false]];
+  const charts = [[t.eating, p.eating, t.min, false], [t.drinking, p.drinking, t.min, false], [t.resting, p.resting, t.hrs, false], [t.playing, p.playing, t.min, false]];
+  const compare = [[t.eating, p.eating, t.min, true], [t.drinking, p.drinking, t.min, true], [t.resting, p.resting, t.hrs, true], [t.playing, p.playing, t.min, true], [t.pacing, p.pacing, t.times, false]];
   const indicators = earlyWarnings([p], L);
 
   if (none) return <EmptyState title={t.emptyTitle} sub={t.emptySub} action={t.emptyAdd} onAction={() => go('manage')} />;

@@ -3,11 +3,14 @@ import { AlertTriangle, Video, Activity, Bell, FileText, ClipboardCheck, Trendin
 import { EMOTIONS, HABITATS, SENSOR_LABELS } from '../data/mock.js';
 import Photo from '../components/Photo.jsx';
 import { photoOf } from '../data/photos.js';
-import { hColor, CODES, sensorStatus, earlyWarnings } from '../lib/analysis.js';
+import { hColor, CODES, sensorStatus, earlyWarnings, boxStatus, BOX_STYLE } from '../lib/analysis.js';
+import CamFeed from '../components/CamFeed.jsx';
 import { Card, HealthBar, EmptyState } from '../components/ui.jsx';
 import ScanCard from '../components/ScanCard.jsx';
 
-export default function Overview({ t, L, tx, animals, alerts, openProfile, go, tasksPending, tasks, piUrl, setPiUrl, live, startScan, addExample }) {
+export default function Overview({ t, L, tx, animals, cameras, alerts, openProfile, go, selectCamera, mode, tasksPending, tasks, piUrl, setPiUrl, live, startScan, addExample }) {
+  const ORDER = { danger: 0, watch: 1, ok: 2 };
+  const wall = animals.map(a => ({ a, cam: cameras.find(c => c.id === a.camera), st: boxStatus(a, alerts) })).sort((x, y) => ORDER[x.st] - ORDER[y.st]);
   const HABITATS_ACTIVE = HABITATS.filter(h => h.animals.some(id => animals.some(a => a.id === id)));
   const [showAll, setShowAll] = React.useState(false);
   const attention = animals.filter(a => a.emotion === 'stressed' || a.emotion === 'agitated');
@@ -39,7 +42,23 @@ export default function Overview({ t, L, tx, animals, alerts, openProfile, go, t
   ];
   return (
     <>
-      <ScanCard t={t} piUrl={piUrl} setPiUrl={setPiUrl} live={live} startScan={startScan} go={go} />
+      {animals.length > 0 && <div className="flex items-center gap-3 flex-wrap -mb-2">
+        <div className="flex-1 min-w-[160px]"><div className="text-[17px] font-bold">{t.wallTitle} <span className="font-mono text-muted text-sm">{animals.length}</span></div><div className="text-[12px] text-muted">{t.wallSub}</div></div>
+        <div className="flex gap-3 w-full md:w-auto">{['ok', 'watch', 'danger'].map(k => <span key={k} className="flex items-center gap-1.5 text-[12px] font-bold" style={{ color: BOX_STYLE[k].color }}><span className="w-4 h-4 rounded-[5px] border-[3px]" style={{ borderColor: BOX_STYLE[k].color, background: BOX_STYLE[k].bg }} />{t[k === 'ok' ? 'boxOk' : k === 'watch' ? 'boxWatch' : 'boxDanger']}</span>)}</div>
+      </div>}
+      {animals.length === 0 && <EmptyState title={t.emptyTitle} sub={mode === 'admin' ? t.emptySub : t.emptyAskAdmin} action={mode === 'admin' ? t.emptyAdd : undefined} onAction={() => go('manage')} action2={mode === 'admin' ? t.addExample : undefined} onAction2={addExample} />}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        {wall.map(({ a, cam, st }) => { const bs = BOX_STYLE[st], word = t[st === 'ok' ? 'boxOk' : st === 'watch' ? 'boxWatch' : 'boxDanger']; return (
+          <button key={a.id} onClick={() => { if (cam) selectCamera(cam.id); go('live'); }} className={`relative rounded-2xl overflow-hidden text-left border-[4px] bg-white shadow-card transition hover:-translate-y-1 hover:shadow-lift ${st === 'danger' ? 'ring-4 ring-[#E74C3C]/25' : ''}`} style={{ borderColor: bs.color }}>
+            {cam ? <CamFeed cam={cam} animals={[a]} label={() => ({ color: bs.color, node: null })} /> : <div className="aspect-video relative"><Photo a={a} className="w-full h-full" /></div>}
+            <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/55 text-white text-[10px] font-mono tracking-wide"><span className="w-1.5 h-1.5 rounded-full bg-[#FF5252] animate-pulse2" />CAM {cam ? cam.id : '—'}</div>
+            <div className="flex items-center gap-2 px-2.5 md:px-3 py-2 text-white" style={{ background: bs.color }}>
+              <span className="text-[16px] md:text-[18px]">{a.emoji}</span>
+              <span className="font-bold text-[13px] md:text-[15px] truncate flex-1">{tx(a.name)}</span>
+              <span className="text-[11px] md:text-[12px] font-bold px-2 py-0.5 rounded-full bg-white/25 whitespace-nowrap">{word}</span>
+            </div>
+          </button>); })}
+      </div>
       <Card className="!rounded-[18px] overflow-hidden border-2" style={{ borderColor: items.length ? SEV[items[0].sev].border : '#BDE8CF' }}>
         <div className="px-4 md:px-5 py-3.5 flex items-center gap-3 border-b border-[#EEF2F7]">
           <div className="w-10 h-10 rounded-xl grid place-items-center text-white flex-none" style={{ background: items.length ? SEV[items[0].sev].color : '#27AE60' }}>{items.length ? <Siren size={20} /> : <CheckCircle2 size={20} />}</div>
@@ -56,26 +75,7 @@ export default function Overview({ t, L, tx, animals, alerts, openProfile, go, t
           {items.length > 4 && <button onClick={() => setShowAll(!showAll)} className="self-start text-ocean text-sm font-semibold px-2 py-1">{showAll ? '▲' : `${t.prMore} ${items.length - 4} ${t.prItems} ▼`}</button>}
         </div>
       </Card>
-      {animals.length === 0 && <EmptyState title={t.emptyTitle} sub={t.emptySub} action={t.emptyAdd} onAction={() => go('manage')} action2={t.addExample} onAction2={addExample} />}
-      {animals.length > 0 && <div className="text-[17px] font-bold -mb-2">{t.guestAnimals}</div>}
-      <div className="grid grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(min(250px,100%),1fr))] gap-3 md:gap-5">
-        {[...animals].sort((x, y) => (x.emotion === 'stressed' || x.emotion === 'agitated' ? 0 : 1) - (y.emotion === 'stressed' || y.emotion === 'agitated' ? 0 : 1) || x.health - y.health).map(a => { const e = EMOTIONS[a.emotion], hc = hColor(a.health), hot = a.emotion === 'stressed' || a.emotion === 'agitated'; return (
-          <Card key={a.id} onClick={() => openProfile(a.id)} className={`overflow-hidden cursor-pointer transition hover:-translate-y-1 hover:shadow-lift animate-fadeIn !rounded-[18px] ${hot ? 'ring-[3px] ring-[#E74C3C] shadow-[0_8px_24px_rgba(231,76,60,.25)]' : ''}`}>
-            <div className="h-[110px] md:h-[160px] relative">
-              <Photo a={a} className="w-full h-full" />
-              <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/55 to-transparent" />
-              <span className="hidden md:block absolute left-3 bottom-2.5 font-mono text-[10px] tracking-[.1em] text-white/90">ID {a.code || CODES[a.id]} · CAM {a.camera}</span>
-              <span className="absolute top-2 right-2 md:top-3 md:right-3 flex items-center gap-1 px-2 md:px-2.5 py-0.5 md:py-1 rounded-full text-[11px] md:text-[13px] font-bold shadow-sm" style={{ background: hot ? e.color : '#fff', color: hot ? '#fff' : e.color }}>{e.emoji} {e[L]}</span>
-              {hot && <span className="absolute left-0 right-0 bottom-0 py-1 text-center text-[11px] font-bold text-white" style={{ background: e.color }}>⚠ {t.needsAttention}</span>}
-            </div>
-            <div className="px-3 pt-2.5 pb-3 md:px-[18px] md:pt-4 md:pb-[18px]">
-              <div className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-0 md:gap-2"><div className="text-[16px] md:text-[19px] font-bold leading-tight truncate">{a.emoji} {tx(a.name)}</div><div className="text-[12px] md:text-[13px] text-muted truncate">{tx(a.species)}</div></div>
-              <div className="mt-2 md:mt-3.5 flex justify-between text-[12px] md:text-[13px] text-muted"><span>{t.healthScore}</span><span className="font-mono font-semibold text-[15px]" style={{ color: hc }}>{a.health}</span></div>
-              <div className="mt-1.5"><HealthBar value={a.health} color={hc} /></div>
-              <div className="hidden md:block mt-3 text-xs text-[#8A97A8]">{t.updated} {a.minutesAgo === 0 ? t.justNow : `${a.minutesAgo} ${t.minAgo}`}</div>
-            </div>
-          </Card>); })}
-      </div>
+      <ScanCard t={t} piUrl={piUrl} setPiUrl={setPiUrl} live={live} startScan={startScan} go={go} />
     </>
   );
 }
