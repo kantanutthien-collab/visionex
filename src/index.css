@@ -28,3 +28,9 @@ body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-even
 /* .motif sits behind the content of any host that has its own stacking context (z-index or .isolate) */
 .motif { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: url('./assets/motif-dark.svg') 0 0/200px 200px; opacity: .09; }
 .motif-light { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: url('./assets/motif-light.svg') 0 0/180px 180px; opacity: .13; }
+
+/* Role tints: workers get a green top bar, admins a navy/purple one, so the switch is visible at once */
+.topbar-worker { background: linear-gradient(90deg, #FFFFFF 0%, #EEFAF2 55%, #E3F6EA 100%); border-bottom-color: #BDE8CF; }
+.topbar-worker::before { background: linear-gradient(90deg, #27AE60, #0EA5A4 60%, #27AE60); }
+.topbar-admin { background: linear-gradient(90deg, #FFFFFF 0%, #EFEEFF 55%, #E6E4FF 100%); border-bottom-color: #CFC9F5; }
+.topbar-admin::before { background: linear-gradient(90deg, #0F2A4A, #7C5CFC 60%, #2E86DE); }

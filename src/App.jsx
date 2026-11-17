@@ -254,8 +254,9 @@ export default function App() {
     ['work', ClipboardCheck, t.catWork, t.catWorkSub, [['tasks', ClipboardCheck, t.navTasks, t.subTasks], ['reports', FileText, t.navReports, t.subReports], ['manage', Settings, t.navManage, t.subManage], ['visitors', Users, t.navVisitors, t.subVisitors], ['about', Info, t.navAbout, t.subAbout]]],
   ];
   const GROUPS = CATS.map(c => [c[2], c[4]]);
-  // Workers do not get the Add / Edit Animals tab
-  const CATS_VIS = mode === 'admin' ? CATS : CATS.map(c => [c[0], c[1], c[2], c[3], c[4].filter(s => s[0] !== 'manage')]);
+  // Workers see today's work only; trends, reports, the entry log and Add / Edit Animals are admin pages
+  const ADMIN_ONLY = ['history', 'reports', 'manage', 'visitors'];
+  const CATS_VIS = mode === 'admin' ? CATS : CATS.map(c => [c[0], c[1], c[2], c[3], c[4].filter(s => !ADMIN_ONLY.includes(s[0]))]);
   const catOf = pg => CATS.find(c => c[4].some(x => x[0] === pg))?.[0] || 'animals';
   const cat = catOf(page);
   const catBadge = { animals: 0, care: unhandled, work: tasks.pending };
@@ -273,11 +274,12 @@ export default function App() {
   const Page = pages[page] || Overview;
 
   // Worker = checks status and does tasks · Admin = can also edit animal data. The visitor screen is a separate display.
-  useEffect(() => { if (mode !== 'admin' && page === 'manage') go('overview'); }, [mode, page]);
+  useEffect(() => { if (mode !== 'admin' && ADMIN_ONLY.includes(page)) go('overview'); }, [mode, page]);
+  const switchMode = m => { setMode(m); go('overview'); };
   const ModeSeg = () => (
     <div className="seg" title={t.roleHint}>
-      <button className={`flex items-center gap-1.5 ${mode === 'worker' ? 'on' : ''}`} onClick={() => setMode('worker')}><HardHat size={14} />{t.modeWorker}</button>
-      <button className={`flex items-center gap-1.5 ${mode === 'admin' ? 'on' : ''}`} onClick={() => setMode('admin')}><Shield size={14} />{t.modeAdmin}</button>
+      <button className={`flex items-center gap-1.5 ${mode === 'worker' ? 'on' : ''}`} onClick={() => switchMode('worker')}><HardHat size={14} />{t.modeWorker}</button>
+      <button className={`flex items-center gap-1.5 ${mode === 'admin' ? 'on' : ''}`} onClick={() => switchMode('admin')}><Shield size={14} />{t.modeAdmin}</button>
     </div>);
   const VisitorBtn = () => <button onClick={() => { prevMode.current = mode; setMode('guest'); }} title={t.visitorScreen} className="flex items-center gap-1.5 h-10 px-3 rounded-[10px] bg-white border border-line text-[#4A5A70] text-[13px] font-semibold"><Tv size={15} /><span className="hidden lg:inline">{t.visitorScreen}</span></button>;
   const BackBtn = () => <button onClick={() => setMode(prevMode.current === 'guest' ? 'worker' : prevMode.current)} className="flex items-center gap-1.5 h-10 px-3.5 rounded-[10px] bg-navy text-white text-sm font-semibold"><ArrowLeft size={15} />{t.backDash}</button>;
@@ -315,12 +317,12 @@ export default function App() {
   const curCat = CATS_VIS.find(c => c[0] === cat) || CATS_VIS[0];
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="topbar relative sticky top-0 z-10 px-4 md:px-6 pt-3.5 pb-2.5 flex items-center gap-3 flex-wrap print:hidden">
+      <header className={`topbar ${mode === 'admin' ? 'topbar-admin' : 'topbar-worker'} relative sticky top-0 z-10 px-4 md:px-6 pt-3.5 pb-2.5 flex items-center gap-3 flex-wrap print:hidden`}>
         <img src={mobile ? logoMark : logoWide} alt="VisionEx" className="h-10 w-auto block" />
         {!mobile && <nav className="flex gap-1 bg-[#E3EAF3] rounded-2xl p-1 border border-[#D3DEEB]">{CATS_VIS.map(c => <CatTab key={c[0]} c={c} />)}</nav>}
         <div className="flex-1" />
         {liveOn && <span className="px-2 py-1 rounded-md text-[10px] font-bold tracking-[.1em] bg-[#FF5252] text-white">{t.piLiveData}</span>}
-        <button onClick={simulate} title={t.simulate} className={mobile ? 'flex items-center gap-1.5 h-10 px-3 rounded-[10px] bg-white border-2 border-[#CFE0F5] text-ocean text-sm font-bold' : 'flex items-center gap-2 px-3.5 py-2 rounded-[10px] bg-ocean hover:bg-[#1B6FC4] text-white text-sm font-semibold transition'}><Zap size={16} />{mobile ? t.demo : t.simulate}</button>
+        {mode === 'admin' && <button onClick={simulate} title={t.simulate} className={mobile ? 'flex items-center gap-1.5 h-10 px-3 rounded-[10px] bg-white border-2 border-[#CFE0F5] text-ocean text-sm font-bold' : 'flex items-center gap-2 px-3.5 py-2 rounded-[10px] bg-ocean hover:bg-[#1B6FC4] text-white text-sm font-semibold transition'}><Zap size={16} />{mobile ? t.demo : t.simulate}</button>}
         {!mobile && <><VisitorBtn /><LangSeg /><ModeSeg /></>}
       </header>
       <div className="relative sticky top-[61px] md:top-[65px] z-[9] backdrop-blur-md border-b px-4 md:px-6 py-2 flex gap-2 overflow-x-auto [scrollbar-width:none] print:hidden" style={{ background: `linear-gradient(90deg, ${pageColor}26, ${pageColor}0D 60%, rgba(255,255,255,.75))`, borderColor: pageColor + '33' }}><i className="motif" style={{ opacity: .07 }} />
@@ -329,6 +331,9 @@ export default function App() {
             <Icon size={15} />{label}{pageBadge[k] > 0 && <span className={`min-w-[18px] h-[18px] px-1 rounded-full text-[10px] grid place-items-center ${on ? 'bg-white/25 text-white' : 'bg-[#E74C3C] text-white'}`}>{pageBadge[k]}</span>}
           </button>); })}
         {mobile && <div className="flex gap-1.5 ml-auto pl-2 flex-none"><VisitorBtn /><LangSeg /><ModeSeg /></div>}
+      </div>
+      <div className={`px-4 md:px-6 py-1.5 text-[12px] md:text-[13px] font-semibold flex items-center gap-2 text-white print:hidden ${mode === 'admin' ? 'bg-gradient-to-r from-navy to-[#4C3FB8]' : 'bg-gradient-to-r from-[#1F8A4C] to-[#0EA5A4]'}`}>
+        {mode === 'admin' ? <Shield size={14} /> : <HardHat size={14} />}<span className="whitespace-nowrap">{mode === 'admin' ? t.roleAdminBar : t.roleWorkerBar}</span><span className="opacity-85 font-normal truncate">· {mode === 'admin' ? t.roleAdminSub : t.roleWorkerSub}</span>
       </div>
       {(() => { const urg = alerts.filter(a => !a.handled && a.severity === 'urgent'); if (!urg.length || page === 'alerts') return null; const a = animals.find(x => x.id === urg[0].animalId); if (!a) return null; return (
         <button onClick={() => go('alerts')} className="w-full text-left bg-[#E74C3C] text-white px-4 md:px-6 py-2.5 flex items-center gap-3 shadow-[0_4px_12px_rgba(231,76,60,.35)] print:hidden">

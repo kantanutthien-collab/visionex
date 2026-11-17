@@ -1,14 +1,16 @@
 import React from 'react';
-import { X, AlertTriangle, Video, Activity, Bell, FileText, ClipboardCheck, TrendingUp, Thermometer, Sparkles, ArrowRight, Siren, Clock, CheckCircle2 } from 'lucide-react';
+import { X, HardHat, Shield, Settings, Download, AlertTriangle, Video, Activity, Bell, FileText, ClipboardCheck, TrendingUp, Thermometer, Sparkles, ArrowRight, Siren, Clock, CheckCircle2 } from 'lucide-react';
 import { EMOTIONS, HABITATS, SENSOR_LABELS } from '../data/mock.js';
 import Photo from '../components/Photo.jsx';
 import { photoOf } from '../data/photos.js';
 import { hColor, CODES, sensorStatus, earlyWarnings, boxStatus, BOX_STYLE } from '../lib/analysis.js';
 import CamFeed from '../components/CamFeed.jsx';
+import { recordRows, recordCSV, downloadCSV } from '../lib/record.js';
+import { loadAiKey } from '../lib/ai.js';
 import { Card, HealthBar, EmptyState, EmotionPill } from '../components/ui.jsx';
 import ScanCard from '../components/ScanCard.jsx';
 
-export default function Overview({ t, L, tx, animals, cameras, alerts, openProfile, go, selectCamera, mode, tasksPending, tasks, piUrl, setPiUrl, live, startScan, addExample }) {
+export default function Overview({ t, L, tx, animals, cameras, alerts, openProfile, go, selectCamera, mode, tasksPending, tasks, piUrl, setPiUrl, live, startScan, addExample, record = {} }) {
   const ORDER = { danger: 0, watch: 1, ok: 2 };
   const wall = animals.map(a => ({ a, cam: cameras.find(c => c.id === a.camera), st: boxStatus(a, alerts) })).sort((x, y) => ORDER[x.st] - ORDER[y.st]);
   const HABITATS_ACTIVE = HABITATS.filter(h => h.animals.some(id => animals.some(a => a.id === id)));
@@ -43,8 +45,34 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
     { k: 'history', Icon: TrendingUp, title: t.navHistory, sub: t.subHistory, n: null, color: '#0F2A4A' },
     { k: 'enrich', Icon: Sparkles, title: t.navEnrich, sub: t.subEnrich, n: null, color: '#27AE60' },
   ];
+  // Role panel: workers see their shift, admins see the system and edit shortcuts
+  const RolePanel = () => mode === 'admin' ? (
+    <Card className="!rounded-[18px] p-4 md:p-5 border-l-[6px] flex flex-col gap-3" style={{ borderColor: '#4C3FB8' }}>
+      <div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl grid place-items-center text-white bg-gradient-to-br from-navy to-[#4C3FB8] flex-none"><Shield size={20} /></div><div><div className="text-[17px] font-bold leading-tight">{t.adminTitle}</div><div className="text-[12px] text-muted">{t.adminSub}</div></div></div>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 text-[13px]">
+        {[[t.adminAnimals, animals.length, '#0F2A4A'], [t.adminCams, cameras.length, '#0F2A4A'], ['Raspberry Pi', live?.status === 'online' ? t.setYes : t.setNo, live?.status === 'online' ? '#27AE60' : '#6B7A90'], [t.adminAi, loadAiKey() ? t.setYes : t.setNo, loadAiKey() ? '#27AE60' : '#6B7A90'], [t.adminRecDays, Math.max(0, ...animals.map(a => recordRows(record, a.id, 3650).length)), '#0F2A4A']].map(([l, v, c]) => <div key={l} className="px-3 py-2 rounded-xl bg-ground"><div className="text-[11px] text-muted">{l}</div><div className="font-bold font-mono text-[15px]" style={{ color: c }}>{v}</div></div>)}
+      </div>
+      <div className="flex gap-2 flex-wrap">
+        <button onClick={() => go('manage')} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-navy text-white text-sm font-semibold"><Settings size={15} />{t.adminEdit}</button>
+        <button onClick={() => go('manage')} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-[#EFEEFF] text-[#4C3FB8] text-sm font-semibold">{t.adminSetup}</button>
+        {animals.length > 0 && <button onClick={() => downloadCSV('visionex-records.csv', animals.map(a => `# ${a.id}\n` + recordCSV(record, a)).join('\n\n'))} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-[#EEF2F7] text-ink text-sm font-semibold"><Download size={15} />{t.adminDownloadAll}</button>}
+      </div>
+    </Card>) : (
+    <Card className="!rounded-[18px] p-4 md:p-5 border-l-[6px] flex flex-col gap-3" style={{ borderColor: '#1F8A4C' }}>
+      <div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl grid place-items-center text-white bg-gradient-to-br from-[#1F8A4C] to-[#0EA5A4] flex-none"><HardHat size={20} /></div><div><div className="text-[17px] font-bold leading-tight">{t.shiftTitle}</div><div className="text-[12px] text-muted">{t.shiftSub}</div></div></div>
+      <div className="grid grid-cols-3 gap-2 text-[13px]">
+        <div className="px-3 py-2 rounded-xl bg-ground"><div className="text-[11px] text-muted">{t.shiftTasks}</div><div className="font-bold font-mono text-[18px] text-[#1F8A4C]">{tasks?.done ?? 0}<span className="text-muted text-[13px]">/{tasks?.all?.length ?? 0}</span></div><HealthBar value={tasks?.all?.length ? tasks.done / tasks.all.length * 100 : 0} color="#27AE60" h="h-1.5" /></div>
+        <div className="px-3 py-2 rounded-xl bg-ground"><div className="text-[11px] text-muted">{t.shiftAlerts}</div><div className="font-bold font-mono text-[18px]" style={{ color: openAlerts ? '#E74C3C' : '#1F8A4C' }}>{openAlerts}</div></div>
+        <div className="px-3 py-2 rounded-xl bg-ground"><div className="text-[11px] text-muted">{t.shiftAttention}</div><div className="font-bold font-mono text-[18px]" style={{ color: attention.length ? '#E67E22' : '#1F8A4C' }}>{attention.length}</div></div>
+      </div>
+      <div className="flex gap-2 flex-wrap">
+        <button onClick={() => go('tasks')} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-[#1F8A4C] text-white text-sm font-semibold"><ClipboardCheck size={15} />{t.shiftOpenTasks}</button>
+        <button onClick={() => go('alerts')} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-[#FDEAEA] text-[#C0392B] text-sm font-semibold"><Bell size={15} />{t.shiftOpenAlerts}</button>
+      </div>
+    </Card>);
   return (
     <>
+      <RolePanel />
       {animals.length > 0 && <div className="flex items-center gap-3 flex-wrap -mb-2">
         <div className="flex-1 min-w-[160px]"><div className="text-[17px] font-bold">{t.wallTitle} <span className="font-mono text-muted text-sm">{animals.length}</span></div><div className="text-[12px] text-muted">{t.wallSub}</div></div>
         <div className="flex gap-3 w-full md:w-auto">{['ok', 'watch', 'danger'].map(k => <span key={k} className="flex items-center gap-1.5 text-[12px] font-bold" style={{ color: BOX_STYLE[k].color }}><span className="w-4 h-4 rounded-[5px] border-[3px]" style={{ borderColor: BOX_STYLE[k].color, background: BOX_STYLE[k].bg }} />{t[k === 'ok' ? 'boxOk' : k === 'watch' ? 'boxWatch' : 'boxDanger']}</span>)}</div>
@@ -68,6 +96,7 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
             <div className="flex-1" />
             <button onClick={() => setOpen(null)} className="px-3.5 py-2 rounded-[10px] bg-[#EEF2F7] text-ink text-sm font-semibold">← {t.wallClose}</button>
             <button onClick={() => openProfile(a.id)} className="px-3.5 py-2 rounded-[10px] bg-[#E8F1FC] text-ocean text-sm font-semibold">{t.viewProfile}</button>
+            {mode === 'admin' && <button onClick={() => go('manage')} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-[#EFEEFF] text-[#4C3FB8] text-sm font-semibold"><Settings size={15} />{t.editAnimal}</button>}
             <button onClick={() => { if (cam) selectCamera(cam.id); go('live'); }} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-ocean text-white text-sm font-semibold"><Video size={15} />{t.navLive}</button>
           </div>
         </Card>); })()}

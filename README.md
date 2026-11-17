@@ -44,8 +44,12 @@ new animals the camera sees are added automatically, and the animals' 7-day stat
 
 ## Roles (switch in the top bar)
 
-- **Worker** (keepers): checks status, alerts, health, enclosure conditions and the to-do list. Cannot edit animal data.
-- **Admin**: everything a worker sees plus **Add / Edit Animals** (animals, cameras, Raspberry Pi link, Claude API key).
+- **Worker** (keepers, green top bar): Home shows "My shift today" (tasks done, open alerts, animals needing care) and the
+  camera wall; tabs are Home, Live Cameras, Animal ID Cards, Alerts, Health & Stress, Enclosure Conditions, Activity Ideas,
+  To-do List, How It Works. No editing and no Simulate button.
+- **Admin** (navy/purple top bar): Home shows the "Admin panel" (animals, cameras, Pi, AI key, days recorded, edit
+  shortcuts, download all records). Adds Trends & History, Daily Reports, Who Entered Today and **Add / Edit Animals**
+  (animals, cameras, Raspberry Pi link, Claude API key), plus an Edit button on the enlarged camera view.
 - **Visitor screen** (button in the top bar): a display for zoo guests. First a "which animal would you like to visit?"
   page, then one page per animal with Home button, live camera, health in plain words, and a "Talk to the animal"
   sound panel (template: labelled sound buttons with meanings, no audio files yet). "Back to dashboard" returns.
