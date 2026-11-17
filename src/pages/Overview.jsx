@@ -1,11 +1,11 @@
 import React from 'react';
-import { AlertTriangle, Video, Activity, Bell, FileText, ClipboardCheck, TrendingUp, Thermometer, Sparkles, ArrowRight, Siren, Clock, CheckCircle2 } from 'lucide-react';
+import { X, AlertTriangle, Video, Activity, Bell, FileText, ClipboardCheck, TrendingUp, Thermometer, Sparkles, ArrowRight, Siren, Clock, CheckCircle2 } from 'lucide-react';
 import { EMOTIONS, HABITATS, SENSOR_LABELS } from '../data/mock.js';
 import Photo from '../components/Photo.jsx';
 import { photoOf } from '../data/photos.js';
 import { hColor, CODES, sensorStatus, earlyWarnings, boxStatus, BOX_STYLE } from '../lib/analysis.js';
 import CamFeed from '../components/CamFeed.jsx';
-import { Card, HealthBar, EmptyState } from '../components/ui.jsx';
+import { Card, HealthBar, EmptyState, EmotionPill } from '../components/ui.jsx';
 import ScanCard from '../components/ScanCard.jsx';
 
 export default function Overview({ t, L, tx, animals, cameras, alerts, openProfile, go, selectCamera, mode, tasksPending, tasks, piUrl, setPiUrl, live, startScan, addExample }) {
@@ -13,6 +13,9 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
   const wall = animals.map(a => ({ a, cam: cameras.find(c => c.id === a.camera), st: boxStatus(a, alerts) })).sort((x, y) => ORDER[x.st] - ORDER[y.st]);
   const HABITATS_ACTIVE = HABITATS.filter(h => h.animals.some(id => animals.some(a => a.id === id)));
   const [showAll, setShowAll] = React.useState(false);
+  const [open, setOpen] = React.useState(null); // id of the camera box that is enlarged (click in / click out)
+  React.useEffect(() => { const k = e => e.key === 'Escape' && setOpen(null); window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k); }, []);
+  const big = open ? wall.find(w => w.a.id === open) : null;
   const attention = animals.filter(a => a.emotion === 'stressed' || a.emotion === 'agitated');
   const count = e => animals.filter(a => a.emotion === e).length;
   const openAlerts = alerts.filter(a => !a.handled).length;
@@ -47,15 +50,36 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
         <div className="flex gap-3 w-full md:w-auto">{['ok', 'watch', 'danger'].map(k => <span key={k} className="flex items-center gap-1.5 text-[12px] font-bold" style={{ color: BOX_STYLE[k].color }}><span className="w-4 h-4 rounded-[5px] border-[3px]" style={{ borderColor: BOX_STYLE[k].color, background: BOX_STYLE[k].bg }} />{t[k === 'ok' ? 'boxOk' : k === 'watch' ? 'boxWatch' : 'boxDanger']}</span>)}</div>
       </div>}
       {animals.length === 0 && <EmptyState title={t.emptyTitle} sub={mode === 'admin' ? t.emptySub : t.emptyAskAdmin} action={mode === 'admin' ? t.emptyAdd : undefined} onAction={() => go('manage')} action2={mode === 'admin' ? t.addExample : undefined} onAction2={addExample} />}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-        {wall.map(({ a, cam, st }) => { const bs = BOX_STYLE[st], word = t[st === 'ok' ? 'boxOk' : st === 'watch' ? 'boxWatch' : 'boxDanger']; return (
-          <button key={a.id} onClick={() => { if (cam) selectCamera(cam.id); go('live'); }} className={`relative rounded-2xl overflow-hidden text-left border-[4px] bg-white shadow-card transition hover:-translate-y-1 hover:shadow-lift ${st === 'danger' ? 'ring-4 ring-[#E74C3C]/25' : ''}`} style={{ borderColor: bs.color }}>
+      {big && (() => { const { a, cam, st } = big, bs = BOX_STYLE[st], word = t[st === 'ok' ? 'boxOk' : st === 'watch' ? 'boxWatch' : 'boxDanger']; return (
+        <Card className="!rounded-[20px] overflow-hidden border-[5px] animate-fadeIn" style={{ borderColor: bs.color }}>
+          <div className="flex items-center gap-3 px-4 py-2.5 text-white" style={{ background: bs.color }}>
+            <span className="text-[22px]">{a.emoji}</span>
+            <div className="flex-1 min-w-0"><div className="font-bold text-[17px] leading-tight truncate">{tx(a.name)} <span className="font-normal text-[13px] opacity-90">· {tx(a.species)} · {tx(a.enclosure)}</span></div></div>
+            <span className="text-[13px] font-bold px-2.5 py-1 rounded-full bg-white/25 whitespace-nowrap">{word}</span>
+            <button onClick={() => setOpen(null)} title={t.wallClose} className="w-9 h-9 rounded-full bg-white/25 hover:bg-white/40 grid place-items-center"><X size={18} /></button>
+          </div>
+          <div onClick={() => setOpen(null)} className="cursor-zoom-out">
             {cam ? <CamFeed cam={cam} animals={[a]} label={() => ({ color: bs.color, node: null })} /> : <div className="aspect-video relative"><Photo a={a} className="w-full h-full" /></div>}
-            <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/55 text-white text-[10px] font-mono tracking-wide"><span className="w-1.5 h-1.5 rounded-full bg-[#FF5252] animate-pulse2" />CAM {cam ? cam.id : '—'}</div>
-            <div className="flex items-center gap-2 px-2.5 md:px-3 py-2 text-white" style={{ background: bs.color }}>
-              <span className="text-[16px] md:text-[18px]">{a.emoji}</span>
-              <span className="font-bold text-[13px] md:text-[15px] truncate flex-1">{tx(a.name)}</span>
-              <span className="text-[11px] md:text-[12px] font-bold px-2 py-0.5 rounded-full bg-white/25 whitespace-nowrap">{word}</span>
+          </div>
+          <div className="px-4 py-3 flex items-center gap-3 flex-wrap">
+            <EmotionPill emotion={a.emotion} L={L} size="text-sm px-3 py-1.5" />
+            <span className="text-[13px] text-muted">{t.healthScore} <b className="font-mono text-[15px]" style={{ color: hColor(a.health) }}>{a.health}</b></span>
+            <span className="text-[12px] text-muted font-mono">CAM {cam ? cam.id : '—'}</span>
+            <div className="flex-1" />
+            <button onClick={() => setOpen(null)} className="px-3.5 py-2 rounded-[10px] bg-[#EEF2F7] text-ink text-sm font-semibold">← {t.wallClose}</button>
+            <button onClick={() => openProfile(a.id)} className="px-3.5 py-2 rounded-[10px] bg-[#E8F1FC] text-ocean text-sm font-semibold">{t.viewProfile}</button>
+            <button onClick={() => { if (cam) selectCamera(cam.id); go('live'); }} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-ocean text-white text-sm font-semibold"><Video size={15} />{t.navLive}</button>
+          </div>
+        </Card>); })()}
+      <div className={`grid gap-3 md:gap-4 ${big ? 'grid-cols-3 md:grid-cols-6' : 'grid-cols-2 md:grid-cols-3'}`}>
+        {wall.map(({ a, cam, st }) => { const bs = BOX_STYLE[st], word = t[st === 'ok' ? 'boxOk' : st === 'watch' ? 'boxWatch' : 'boxDanger']; return (
+          <button key={a.id} onClick={() => setOpen(open === a.id ? null : a.id)} className={`relative rounded-2xl overflow-hidden text-left border-[4px] bg-white shadow-card transition hover:-translate-y-1 hover:shadow-lift ${st === 'danger' ? 'ring-4 ring-[#E74C3C]/25' : ''} ${open === a.id ? 'ring-4 ring-ocean/40' : ''}`} style={{ borderColor: bs.color, opacity: open && open !== a.id ? 0.7 : 1 }}>
+            {cam ? <CamFeed cam={cam} animals={[a]} label={() => ({ color: bs.color, node: null })} /> : <div className="aspect-video relative"><Photo a={a} className="w-full h-full" /></div>}
+            {!big && <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/55 text-white text-[10px] font-mono tracking-wide"><span className="w-1.5 h-1.5 rounded-full bg-[#FF5252] animate-pulse2" />CAM {cam ? cam.id : '—'}</div>}
+            <div className={`flex items-center gap-2 text-white ${big ? 'px-2 py-1' : 'px-2.5 md:px-3 py-2'}`} style={{ background: bs.color }}>
+              <span className={big ? 'text-[13px]' : 'text-[16px] md:text-[18px]'}>{a.emoji}</span>
+              <span className={`font-bold truncate flex-1 ${big ? 'text-[11px]' : 'text-[13px] md:text-[15px]'}`}>{tx(a.name)}</span>
+              {!big && <span className="text-[11px] md:text-[12px] font-bold px-2 py-0.5 rounded-full bg-white/25 whitespace-nowrap">{word}</span>}
             </div>
           </button>); })}
       </div>
