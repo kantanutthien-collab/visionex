@@ -50,9 +50,9 @@ new animals the camera sees are added automatically, and the animals' 7-day stat
 - **Admin** (navy/purple top bar): Home shows the "Admin panel" (animals, cameras, Pi, AI key, days recorded, edit
   shortcuts, download all records). Adds Trends & History, Daily Reports, Who Entered Today and **Add / Edit Animals**
   (animals, cameras, Raspberry Pi link, Claude API key), plus an Edit button on the enlarged camera view.
-- **Visitor screen** (button in the top bar): a display for zoo guests. First a "which animal would you like to visit?"
-  page, then one page per animal with Home button, live camera, health in plain words, and a "Talk to the animal"
-  sound panel (template: labelled sound buttons with meanings, no audio files yet). "Back to dashboard" returns.
+- **Guest** (zoo visitors): first a "which animal would you like to visit?" page, then one page per animal with Home
+  button, live camera, health in plain words, and a "Talk to the animal" sound panel (template: labelled sound buttons
+  with meanings, no audio files yet). The same Worker / Admin / Guest switch stays in the top bar.
 
 ## Daily record + AI analysis
 

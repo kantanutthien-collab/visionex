@@ -74,7 +74,6 @@ export default function App() {
   const [piUrl, setPiUrlState] = useState(() => loadJSON(LS.pi, ''));
   const [record, setRecord] = useState(loadRecord);
   useEffect(() => { setRecord(r => writeRecord(animals, new Date(), r)); }, [animals]);
-  const prevMode = useRef('worker');
   const setPiUrl = u => { setPiUrlState(u); localStorage.setItem(LS.pi, JSON.stringify(u)); };
   const live = useLive(piUrl);
   const liveOn = live.status === 'online';
@@ -275,14 +274,13 @@ export default function App() {
 
   // Worker = checks status and does tasks · Admin = can also edit animal data. The visitor screen is a separate display.
   useEffect(() => { if (mode !== 'admin' && ADMIN_ONLY.includes(page)) go('overview'); }, [mode, page]);
-  const switchMode = m => { setMode(m); go('overview'); };
+  const switchMode = m => { setMode(m); if (m !== 'guest') go('overview'); };
   const ModeSeg = () => (
     <div className="seg" title={t.roleHint}>
       <button className={`flex items-center gap-1.5 ${mode === 'worker' ? 'on' : ''}`} onClick={() => switchMode('worker')}><HardHat size={14} />{t.modeWorker}</button>
       <button className={`flex items-center gap-1.5 ${mode === 'admin' ? 'on' : ''}`} onClick={() => switchMode('admin')}><Shield size={14} />{t.modeAdmin}</button>
+      <button className={`flex items-center gap-1.5 ${mode === 'guest' ? 'on' : ''}`} onClick={() => switchMode('guest')}><Smile size={14} />{t.modeGuest}</button>
     </div>);
-  const VisitorBtn = () => <button onClick={() => { prevMode.current = mode; setMode('guest'); }} title={t.visitorScreen} className="flex items-center gap-1.5 h-10 px-3 rounded-[10px] bg-white border border-line text-[#4A5A70] text-[13px] font-semibold"><Tv size={15} /><span className="hidden lg:inline">{t.visitorScreen}</span></button>;
-  const BackBtn = () => <button onClick={() => setMode(prevMode.current === 'guest' ? 'worker' : prevMode.current)} className="flex items-center gap-1.5 h-10 px-3.5 rounded-[10px] bg-navy text-white text-sm font-semibold"><ArrowLeft size={15} />{t.backDash}</button>;
   const LangSeg = () => <div className="seg"><button className={L === 'th' ? 'on' : ''} onClick={() => setLang('th')}>ไทย</button><button className={L === 'en' ? 'on' : ''} onClick={() => setLang('en')}>EN</button></div>;
   const Toast = () => { if (!toast) return null; const a = animals.find(x => x.id === toast.animalId); if (!a) return null; const sv = SEV_STYLE[toast.severity]; return (
     <div className="fixed right-6 bottom-6 z-50 w-[360px] max-w-[calc(100vw-48px)] bg-white rounded-2xl shadow-[0_12px_40px_rgba(15,42,74,.22)] p-4 flex gap-3.5 items-start animate-toast border-t-4" style={{ borderColor: sv.color }}>
@@ -302,7 +300,7 @@ export default function App() {
         <img src={logoWide} alt="VisionEx" className="h-10 w-auto block" />
         <div className="flex-1 min-w-[140px]"><div className="text-[18px] font-bold leading-tight">{t.guestTitle}</div><div className="text-xs text-muted">{t.guestSub}</div></div>
         <div className="hidden sm:flex items-center gap-2.5 px-3.5 py-2 rounded-[10px] border border-line bg-white font-mono text-xs text-[#4A5A70]"><span className="font-semibold text-navy tabular-nums">{hms(now)}</span><span className="text-[#B9C4D3]">|</span><span>{dateStr}</span></div>
-        <LangSeg /><BackBtn />
+        <LangSeg /><ModeSeg />
       </header>
       <main className="flex-1 w-full max-w-[1200px] mx-auto p-4 sm:p-7"><Guest {...ctx} /></main>
     </div>
@@ -323,14 +321,14 @@ export default function App() {
         <div className="flex-1" />
         {liveOn && <span className="px-2 py-1 rounded-md text-[10px] font-bold tracking-[.1em] bg-[#FF5252] text-white">{t.piLiveData}</span>}
         {mode === 'admin' && <button onClick={simulate} title={t.simulate} className={mobile ? 'flex items-center gap-1.5 h-10 px-3 rounded-[10px] bg-white border-2 border-[#CFE0F5] text-ocean text-sm font-bold' : 'flex items-center gap-2 px-3.5 py-2 rounded-[10px] bg-ocean hover:bg-[#1B6FC4] text-white text-sm font-semibold transition'}><Zap size={16} />{mobile ? t.demo : t.simulate}</button>}
-        {!mobile && <><VisitorBtn /><LangSeg /><ModeSeg /></>}
+        {!mobile && <><LangSeg /><ModeSeg /></>}
       </header>
       <div className="relative sticky top-[61px] md:top-[65px] z-[9] backdrop-blur-md border-b px-4 md:px-6 py-2 flex gap-2 overflow-x-auto [scrollbar-width:none] print:hidden" style={{ background: `linear-gradient(90deg, ${pageColor}26, ${pageColor}0D 60%, rgba(255,255,255,.75))`, borderColor: pageColor + '33' }}><i className="motif" style={{ opacity: .07 }} />
         {curCat[4].map(([k, Icon, label]) => { const on = page === k || (page === 'profile' && k === 'overview'); const col = PAGE_COLOR[k]; return (
           <button key={k} onClick={() => go(k)} className="flex items-center gap-2 px-3.5 py-2 rounded-full text-[13px] font-bold whitespace-nowrap border-2 transition" style={on ? { background: col, borderColor: col, color: '#fff' } : { borderColor: col + '55', color: col, background: '#fff' }}>
             <Icon size={15} />{label}{pageBadge[k] > 0 && <span className={`min-w-[18px] h-[18px] px-1 rounded-full text-[10px] grid place-items-center ${on ? 'bg-white/25 text-white' : 'bg-[#E74C3C] text-white'}`}>{pageBadge[k]}</span>}
           </button>); })}
-        {mobile && <div className="flex gap-1.5 ml-auto pl-2 flex-none"><VisitorBtn /><LangSeg /><ModeSeg /></div>}
+        {mobile && <div className="flex gap-1.5 ml-auto pl-2 flex-none"><LangSeg /><ModeSeg /></div>}
       </div>
       <div className={`px-4 md:px-6 py-1.5 text-[12px] md:text-[13px] font-semibold flex items-center gap-2 text-white print:hidden ${mode === 'admin' ? 'bg-gradient-to-r from-navy to-[#4C3FB8]' : 'bg-gradient-to-r from-[#1F8A4C] to-[#0EA5A4]'}`}>
         {mode === 'admin' ? <Shield size={14} /> : <HardHat size={14} />}<span className="whitespace-nowrap">{mode === 'admin' ? t.roleAdminBar : t.roleWorkerBar}</span><span className="opacity-85 font-normal truncate">· {mode === 'admin' ? t.roleAdminSub : t.roleWorkerSub}</span>
