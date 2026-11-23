@@ -31,6 +31,7 @@ const FACTS = {
   tiger:    { th: 'ลายของเสือแต่ละตัวไม่ซ้ำกัน เหมือนลายนิ้วมือของคน', en: 'Every tiger\'s stripes are unique, like a human fingerprint.' },
   zebra:    { th: 'ม้าลายแต่ละตัวมีลายไม่เหมือนกันเลย ลูกม้าลายจำแม่ได้จากลาย', en: 'No two zebras have the same stripes. Foals recognise their mother by her pattern.' },
   otter:    { th: 'นากเล็กเล็บสั้นเป็นนากที่ตัวเล็กที่สุดในโลก และใช้มือคลำหาอาหารใต้น้ำ', en: 'The small-clawed otter is the world\'s smallest otter and feels for food underwater with its paws.' },
+  hippo:    { th: 'ฮิปโปอยู่ในน้ำได้ทั้งวันเพื่อกันแดด และขึ้นมากินหญ้าตอนกลางคืนได้ถึง 40 กก.', en: 'Hippos stay in water all day to keep cool, then graze up to 40 kg of grass at night.' },
 };
 const GENERIC_SOUNDS = [ { emoji: '🎵', name: { th: 'เสียงเรียก', en: 'Contact call' }, meaning: { th: 'ใช้ติดต่อกับพวกเดียวกัน', en: 'Used to keep in touch with its group' } }, { emoji: '⚠️', name: { th: 'เสียงเตือน', en: 'Alarm call' }, meaning: { th: 'เตือนภัย', en: 'Warns of danger' }, avoid: true } ];
 

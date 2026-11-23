@@ -35,12 +35,15 @@ export const ANIMALS = [
   { id: 'tiger', emoji: '🐯', tint: '#F9E2C8', name: { th: 'ขวัญใจ', en: 'Kwanjai' }, species: { th: 'เสือโคร่งอินโดจีน', en: 'Indochinese tiger' }, age: 6, enclosure: { th: 'โซนสัตว์ผู้ล่า A', en: 'Predator Zone A' }, emotion: 'calm', health: 78, minutesAgo: 5, camera: 4,
     eating: [50, 49, 51, 50, 48, 49, 47], activity: [50, 52, 51, 49, 46, 44, 41], resting: [14, 14, 14.5, 14, 15, 15.5, 16], pacing: [3, 3, 2, 3, 4, 4, 5], drinking: [12, 12, 13, 12, 11, 11, 10], playing: [25, 26, 24, 22, 18, 16, 12],
     timeline: ['calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm'] },
-  { id: 'zebra', emoji: '🦓', tint: '#E8E8EC', name: { th: 'ลายเส้น', en: 'Laisen' }, species: { th: 'ม้าลาย', en: 'Plains zebra' }, age: 5, enclosure: { th: 'โซนสะวันนา A', en: 'Savanna Zone A' }, emotion: 'calm', health: 89, minutesAgo: 2, camera: 2,
+  { id: 'zebra', emoji: '🦓', tint: '#E8E8EC', name: { th: 'ลายเส้น', en: 'Laisen' }, species: { th: 'ม้าลาย', en: 'Plains zebra' }, age: 5, enclosure: { th: 'โซนสะวันนา B', en: 'Savanna Zone B' }, emotion: 'calm', health: 89, minutesAgo: 2, camera: 2,
     eating: [380, 385, 378, 390, 382, 388, 384], activity: [65, 66, 64, 67, 65, 66, 66], resting: [6, 6, 6.2, 6, 6, 6, 6.1], pacing: [1, 1, 2, 1, 1, 1, 1], drinking: [15, 16, 15, 16, 15, 16, 15], playing: [40, 42, 38, 44, 40, 43, 41],
     timeline: ['calm', 'calm', 'calm', 'calm', 'playful', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm'] },
   { id: 'otter', emoji: '🦦', tint: '#E1EEEA', name: { th: 'โอ๋โอ๋', en: 'Oh-oh' }, species: { th: 'นากเล็กเล็บสั้น', en: 'Small-clawed otter' }, age: 2, enclosure: { th: 'ลำธารนาก', en: 'Otter Creek' }, emotion: 'playful', health: 93, minutesAgo: 1, camera: 8,
     eating: [90, 88, 92, 90, 91, 94, 93], activity: [90, 89, 91, 90, 92, 90, 91], resting: [10, 10, 9.5, 10, 10, 10, 10], pacing: [0, 0, 0, 0, 0, 0, 0], drinking: [20, 21, 20, 22, 20, 21, 21], playing: [150, 148, 155, 152, 158, 150, 156],
     timeline: ['playful', 'playful', 'calm', 'playful', 'playful', 'playful', 'calm', 'playful', 'playful', 'playful', 'calm', 'calm'] },
+  { id: 'hippo', emoji: '🦛', tint: '#E9E1EA', name: { th: 'อ้วนกลม', en: 'Uan' }, species: { th: 'ฮิปโปโปเตมัส', en: 'Hippopotamus' }, age: 12, enclosure: { th: 'บ่อฮิปโป', en: 'Hippo Pool' }, emotion: 'calm', health: 90, minutesAgo: 3, camera: 9,
+    eating: [240, 245, 238, 250, 242, 246, 244], activity: [40, 42, 39, 41, 43, 40, 41], resting: [15, 15.5, 15, 14.8, 15.2, 15, 15.1], pacing: [0, 0, 1, 0, 0, 0, 0], drinking: [30, 32, 30, 31, 30, 33, 31], playing: [15, 18, 14, 16, 20, 17, 16],
+    timeline: ['calm', 'calm', 'calm', 'calm', 'playful', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm'] },
 ];
 
 export const ALERTS = [
@@ -59,13 +62,14 @@ export const ALERTS = [
 // One camera per enclosure. photo = key in data/photos.js. Boxes are in photo-percent coordinates (x, y, w, h) and are mapped onto the feed by components/CamFeed.jsx.
 export const CAMERAS = [
   { id: 1, name: { th: 'สะวันนา A · ยีราฟ', en: 'Savanna A · Giraffe' },   photo: 'giraffe',  boxes: [ { animalId: 'giraffe',  tag: 'Giraffe #1',  conf: 92, x: 3,  y: 4,  w: 90, h: 88 } ] },
-  { id: 2, name: { th: 'สะวันนา A · ม้าลาย', en: 'Savanna A · Zebra' },    photo: 'zebra',    boxes: [ { animalId: 'zebra',    tag: 'Zebra #3',    conf: 88, x: 29, y: 12, w: 64, h: 79 } ] },
+  { id: 2, name: { th: 'สะวันนา B · ม้าลาย', en: 'Savanna B · Zebra' },    photo: 'zebra',    boxes: [ { animalId: 'zebra',    tag: 'Zebra #3',    conf: 88, x: 29, y: 12, w: 64, h: 79 } ] },
   { id: 3, name: { th: 'ลานช้าง', en: 'Elephant Yard' },                    photo: 'elephant', boxes: [ { animalId: 'elephant', tag: 'Elephant #1', conf: 97, x: 31, y: 12, w: 42, h: 78 } ] },
   { id: 4, name: { th: 'ผู้ล่า A · เสือโคร่ง', en: 'Predator A · Tiger' },  photo: 'tiger',    boxes: [ { animalId: 'tiger',    tag: 'Tiger #2',    conf: 90, x: 12, y: 22, w: 82, h: 52 } ] },
   { id: 5, name: { th: 'ผู้ล่า B · สิงโต', en: 'Predator B · Lion' },       photo: 'lion',     boxes: [ { animalId: 'lion',     tag: 'Lion #1',     conf: 71, x: 15, y: 14, w: 75, h: 72 } ] },
   { id: 6, name: { th: 'เกาะลิง', en: 'Monkey Island' },                    photo: 'monkey',   boxes: [ { animalId: 'monkey', tag: 'Macaque #4', conf: 95, x: 3, y: 10, w: 40, h: 78 }, { animalId: 'monkey', tag: 'Macaque #7', conf: 89, x: 50, y: 15, w: 50, h: 78 }, { animalId: 'monkey', tag: 'Macaque #2', conf: 81, x: 35, y: 37, w: 15, h: 30 } ] },
   { id: 7, name: { th: 'บ่อเพนกวิน', en: 'Penguin Pool' },                  photo: 'penguin',  boxes: [ { animalId: 'penguin',  tag: 'Penguin #5',  conf: 96, x: 18, y: 16, w: 78, h: 65 } ] },
   { id: 8, name: { th: 'ลำธารนาก', en: 'Otter Creek' },                     photo: 'otter',    boxes: [ { animalId: 'otter',    tag: 'Otter #1',    conf: 91, x: 24, y: 18, w: 66, h: 55 } ] },
+  { id: 9, name: { th: 'บ่อฮิปโป', en: 'Hippo Pool' },                      photo: 'hippo',    boxes: [ { animalId: 'hippo',    tag: 'Hippo #1',    conf: 94, x: 27, y: 1,  w: 73, h: 97 } ] },
 ];
 
 export const BEHAVIOR_SEED = {
@@ -77,6 +81,7 @@ export const BEHAVIOR_SEED = {
   6: [ ['09:41:30', 'monkey', 'playing'], ['09:39:02', 'monkey', 'eating'], ['09:36:48', 'monkey', 'playing'], ['09:32:15', 'monkey', 'walking'], ['09:27:59', 'monkey', 'resting'] ],
   7: [ ['09:38:22', 'penguin', 'eating'], ['09:34:47', 'penguin', 'walking'], ['09:25:36', 'penguin', 'resting'], ['09:13:10', 'penguin', 'playing'] ],
   8: [ ['09:41:05', 'otter', 'playing'], ['09:30:10', 'otter', 'eating'], ['09:20:44', 'otter', 'playing'], ['09:08:29', 'otter', 'resting'] ],
+  9: [ ['09:40:12', 'hippo', 'resting'], ['09:22:40', 'hippo', 'eating'], ['09:05:33', 'hippo', 'walking'], ['08:50:08', 'hippo', 'drinking'] ],
 };
 
 export const VISITORS = [
@@ -108,6 +113,7 @@ export const DEX = {
   tiger:    { code: 'TG-02', pattern: { th: 'ลายทางดำบนส้ม', en: 'Black stripes on orange' }, size: { th: 'ยาว 2.7 ม.', en: 'Length 2.7 m' }, coat: { th: 'ส้มเข้ม', en: 'Deep orange' }, mark: { th: 'ลายหน้าผากรูปตัว W', en: 'W-shaped brow stripe' }, signature: [0.88, 0.72, 0.85, 0.55, 0.58, 0.63, 0.78, 0.90], accuracy: 98, sightings: 9 },
   zebra:    { code: 'ZB-03', pattern: { th: 'ลายทางขาว-ดำ', en: 'Black and white stripes' }, size: { th: 'สูง 1.4 ม.', en: 'Height 1.4 m' }, coat: { th: 'ขาว-ดำ', en: 'Black / white' }, mark: { th: 'ลายสะโพกซ้ายแยกเป็นสองแฉก', en: 'Forked stripe left hip' }, signature: [0.95, 0.60, 0.15, 0.85, 0.50, 0.70, 0.60, 0.95], accuracy: 96, sightings: 13 },
   otter:    { code: 'OT-01', pattern: { th: 'ขนสีเดียว คางขาว', en: 'Solid coat, pale chin' }, size: { th: 'ยาว 60 ซม.', en: 'Length 60 cm' }, coat: { th: 'น้ำตาลเข้ม', en: 'Dark brown' }, mark: { th: 'เล็บหน้าซ้ายสั้นกว่าปกติ', en: 'Short claw left forepaw' }, signature: [0.08, 0.15, 0.68, 0.35, 0.80, 0.42, 0.85, 0.28], accuracy: 90, sightings: 27 },
+  hippo:    { code: 'HP-01', pattern: { th: 'ผิวเรียบสีเทาอมชมพู', en: 'Smooth grey-pink skin' }, size: { th: 'สูง 1.5 ม.', en: 'Height 1.5 m' }, coat: { th: 'เทาอมชมพู', en: 'Grey-pink' }, mark: { th: 'รอยแผลเป็นที่หูซ้าย', en: 'Scar on left ear' }, signature: [0.70, 0.10, 0.95, 0.20, 0.30, 0.88, 0.12, 0.60], accuracy: 93, sightings: 18 },
 };
 export const DEX_FEATURES = [ { th: 'ลวดลาย', en: 'Pattern' }, { th: 'ขนาดตัว', en: 'Body size' }, { th: 'โทนสีขน', en: 'Coat tone' }, { th: 'สัดส่วนขา', en: 'Limb ratio' }, { th: 'ท่าเดิน', en: 'Gait' }, { th: 'รูปหัว', en: 'Head shape' }, { th: 'หาง', en: 'Tail' }, { th: 'ตำหนิ', en: 'Markings' } ];
 
@@ -118,13 +124,15 @@ export const SENSOR_LABELS = {
   ph:       { th: 'ค่า pH น้ำ', en: 'Water pH' }, chlorine: { th: 'คลอรีน', en: 'Chlorine' }, turbidity: { th: 'ความขุ่นของน้ำ', en: 'Water turbidity' },
 };
 export const HABITATS = [
-  { id: 'savanna',   name: { th: 'โซนสะวันนา A', en: 'Savanna Zone A' },    animals: ['giraffe', 'zebra'], camera: 1, aquatic: false, sensors: [ { key: 'temp', value: 31.4, unit: '°C', range: [18, 35] }, { key: 'humidity', value: 62, unit: '%', range: [40, 75] }, { key: 'shade', value: 48, unit: '%', range: [30, 100] } ] },
+  { id: 'savanna',   name: { th: 'โซนสะวันนา A', en: 'Savanna Zone A' },    animals: ['giraffe'], camera: 1, aquatic: false, sensors: [ { key: 'temp', value: 31.4, unit: '°C', range: [18, 35] }, { key: 'humidity', value: 62, unit: '%', range: [40, 75] }, { key: 'shade', value: 48, unit: '%', range: [30, 100] } ] },
+  { id: 'savannaB',  name: { th: 'โซนสะวันนา B', en: 'Savanna Zone B' },    animals: ['zebra'], camera: 2, aquatic: false, sensors: [ { key: 'temp', value: 30.9, unit: '°C', range: [18, 35] }, { key: 'humidity', value: 60, unit: '%', range: [40, 75] }, { key: 'shade', value: 52, unit: '%', range: [30, 100] } ] },
   { id: 'elephant',  name: { th: 'ลานช้าง', en: 'Elephant Yard' },           animals: ['elephant'], camera: 3, aquatic: false, sensors: [ { key: 'temp', value: 32.8, unit: '°C', range: [18, 34] }, { key: 'humidity', value: 58, unit: '%', range: [40, 80] }, { key: 'waterLevel', value: 42, unit: '%', range: [50, 100] } ] },
   { id: 'predatorA', name: { th: 'โซนสัตว์ผู้ล่า A', en: 'Predator Zone A' }, animals: ['tiger'], camera: 4, aquatic: false, sensors: [ { key: 'temp', value: 29.6, unit: '°C', range: [16, 33] }, { key: 'humidity', value: 66, unit: '%', range: [40, 80] }, { key: 'noise', value: 54, unit: 'dB', range: [0, 70] } ] },
   { id: 'predatorB', name: { th: 'โซนสัตว์ผู้ล่า B', en: 'Predator Zone B' }, animals: ['lion'], camera: 5, aquatic: false, sensors: [ { key: 'temp', value: 30.1, unit: '°C', range: [16, 33] }, { key: 'humidity', value: 64, unit: '%', range: [40, 80] }, { key: 'noise', value: 73, unit: 'dB', range: [0, 70] } ] },
   { id: 'monkey',    name: { th: 'เกาะลิง', en: 'Monkey Island' },            animals: ['monkey'], camera: 6, aquatic: false, sensors: [ { key: 'temp', value: 30.5, unit: '°C', range: [18, 35] }, { key: 'humidity', value: 70, unit: '%', range: [40, 85] }, { key: 'noise', value: 68, unit: 'dB', range: [0, 70] } ] },
   { id: 'penguin',   name: { th: 'บ่อเพนกวิน', en: 'Penguin Pool' },          animals: ['penguin'], camera: 7, aquatic: true,  sensors: [ { key: 'waterTemp', value: 17.2, unit: '°C', range: [12, 20] }, { key: 'ph', value: 7.6, unit: '', range: [7.2, 8.2] }, { key: 'chlorine', value: 0.4, unit: 'ppm', range: [0.2, 0.8] }, { key: 'temp', value: 24.1, unit: '°C', range: [15, 28] } ] },
   { id: 'otter',     name: { th: 'ลำธารนาก', en: 'Otter Creek' },             animals: ['otter'], camera: 8, aquatic: true,  sensors: [ { key: 'waterTemp', value: 26.0, unit: '°C', range: [20, 28] }, { key: 'ph', value: 7.0, unit: '', range: [6.5, 8.0] }, { key: 'turbidity', value: 12, unit: 'NTU', range: [0, 25] }, { key: 'temp', value: 29.8, unit: '°C', range: [20, 32] } ] },
+  { id: 'hippo',     name: { th: 'บ่อฮิปโป', en: 'Hippo Pool' },              animals: ['hippo'], camera: 9, aquatic: true,  sensors: [ { key: 'waterTemp', value: 27.5, unit: '°C', range: [22, 30] }, { key: 'ph', value: 7.2, unit: '', range: [6.5, 8.0] }, { key: 'waterLevel', value: 88, unit: '%', range: [60, 100] }, { key: 'temp', value: 31.0, unit: '°C', range: [20, 35] } ] },
 ];
 
 // ---------- Keeper routine tasks (scheduled checks for today) ----------
@@ -135,6 +143,7 @@ export const ROUTINE_TASKS = [
   { id: 'r4', time: '09:30', animalId: 'monkey',   title: { th: 'กิจกรรมให้ลิง: กล่องหาอาหาร', en: 'Activity for monkeys: foraging puzzle box' } },
   { id: 'r5', time: '11:00', animalId: 'giraffe',  title: { th: 'ให้กิ่งไม้สดรอบสาย', en: 'Late-morning browse feeding' } },
   { id: 'r6', time: '13:00', animalId: 'otter',    title: { th: 'ตรวจการเปลี่ยนน้ำลำธาร', en: 'Creek water change check' } },
+  { id: 'r9', time: '15:30', animalId: 'hippo',    title: { th: 'ตรวจคุณภาพน้ำบ่อฮิปโป', en: 'Hippo pool water quality check' } },
   { id: 'r7', time: '15:00', animalId: 'tiger',    title: { th: 'ตรวจคอกรอบบ่าย', en: 'Afternoon enclosure check' } },
   { id: 'r8', time: '16:30', animalId: null,       title: { th: 'นับจำนวนสัตว์รอบเย็น', en: 'Evening headcount' } },
 ];
@@ -149,6 +158,7 @@ export const ENRICHMENT = {
   tiger:    [ { th: 'ก้อนน้ำแข็งเนื้อแช่แข็ง', en: 'Frozen meat ice block' }, { th: 'ท่อนไม้ลอยน้ำในบ่อ', en: 'Floating logs in pool' }, { th: 'สลับแท่นยกสูง', en: 'Rotate elevated platforms' }, { th: 'กลิ่นสัตว์ชนิดอื่นบนหิน', en: 'Novel animal scent on rocks' } ],
   zebra:    [ { th: 'โปรยอาหารกระจายทั่วคอก', en: 'Scatter feeding across the yard' }, { th: 'พื้นที่ทรายใหม่สำหรับกลิ้งตัว', en: 'Fresh sand area for rolling' }, { th: 'แปรงขัดตัวติดเสา', en: 'Post-mounted grooming brush' } ],
   otter:    [ { th: 'ก้อนน้ำแข็งใส่ปลา', en: 'Fish frozen in ice cubes' }, { th: 'กองก้อนกรวดใหม่', en: 'Fresh pebble pile' }, { th: 'ท่อ PVC ใส่อาหาร', en: 'PVC feeder tube' } ],
+  hippo:    [ { th: 'แตงโมทั้งลูกลอยน้ำ', en: 'Whole watermelon floating in the pool' }, { th: 'ย้ายจุดให้หญ้าแห้ง', en: 'Move the hay feeding spot' }, { th: 'พ่นน้ำเล่นตอนบ่าย', en: 'Afternoon sprinkler play' } ],
 };
 export const ENRICHMENT_LOG = [
   { id: 'e1', animalId: 'tiger',    activity: { th: 'ก้อนน้ำแข็งเนื้อแช่แข็ง', en: 'Frozen meat ice block' }, day: { th: 'เมื่อวาน', en: 'Yesterday' }, time: '14:00', before: { activity: 44, pacing: 4 }, after: { activity: 58, pacing: 2 }, response: 'positive' },
@@ -163,6 +173,7 @@ export const HOURLY = {
   lion:     [62, 58, 44, 30, 22, 18, 18, 22, 34, 50, 64, 68, 60], monkey:   [60, 84, 92, 90, 82, 70, 66, 74, 88, 92, 86, 72, 58],
   penguin:  [52, 76, 86, 80, 70, 64, 62, 70, 84, 88, 78, 64, 50], tiger:    [60, 55, 40, 28, 20, 16, 16, 20, 32, 48, 62, 66, 58],
   zebra:    [52, 70, 76, 70, 60, 52, 48, 54, 66, 74, 74, 64, 52], otter:    [58, 86, 94, 92, 86, 78, 74, 82, 92, 94, 88, 74, 60],
+  hippo:    [30, 45, 50, 42, 34, 28, 26, 30, 40, 52, 56, 48, 36],
 };
 export const OBSERVATIONS = {
   lion:     [ { daysAgo: 0, by: 'vet',    text: { th: 'ตรวจร่างกายเบื้องต้น ไม่พบบาดแผล แต่กินน้อยและเดินวนบ่อย นัดตรวจเลือดพรุ่งนี้', en: 'Physical exam: no wounds found, but low appetite and frequent pacing. Blood test scheduled tomorrow.' } }, { daysAgo: 1, by: 'keeper', text: { th: 'เหลืออาหาร 25% เดินวนช่วงที่มีกลุ่มนักเรียนเสียงดัง', en: 'Left 25% of food. Paced while a loud student group was nearby.' } }, { daysAgo: 3, by: 'keeper', text: { th: 'ปกติ กินครบ นอนกลางวันตามปกติ', en: 'Normal. Full portion eaten, usual midday rest.' } } ],
@@ -173,6 +184,7 @@ export const OBSERVATIONS = {
   giraffe:  [ { daysAgo: 2, by: 'keeper', text: { th: 'ชอบกิ่งไม้ที่แขวนสูง กินหมดภายใน 1 ชม.', en: 'Preferred high-hung browse, finished within 1 hour.' } } ],
   zebra:    [ { daysAgo: 4, by: 'keeper', text: { th: 'กลิ้งตัวในทรายใหม่ทันทีที่เปิดพื้นที่', en: 'Rolled in the fresh sand as soon as it was opened.' } } ],
   otter:    [ { daysAgo: 1, by: 'keeper', text: { th: 'เล่นกับก้อนน้ำแข็งใส่ปลานาน 25 นาที', en: 'Played with fish ice cubes for 25 min.' } } ],
+  hippo:    [ { daysAgo: 2, by: 'keeper', text: { th: 'ขึ้นจากน้ำมากินหญ้าตอนเย็นตามปกติ', en: 'Came out of the water to graze in the evening as usual.' } } ],
 };
 
 // ---------- Guest "talk to the animal" sound library (template: no audio files yet). avoid = true means the call can alarm the animal ----------
@@ -185,4 +197,5 @@ export const SOUNDS = {
   tiger:    [ { emoji: '😮‍💨', name: { th: 'ชัฟ (พ่นลม)', en: 'Chuff' }, meaning: { th: 'ทักทายอย่างเป็นมิตร', en: 'Friendly greeting' } }, { emoji: '🐯', name: { th: 'คำราม', en: 'Roar' }, meaning: { th: 'ประกาศอาณาเขต', en: 'Territory call' }, avoid: true }, { emoji: '🌙', name: { th: 'เสียงครวญ', en: 'Moan' }, meaning: { th: 'เรียกหาเสือตัวอื่นระยะไกล', en: 'Long-distance call to other tigers' } } ],
   zebra:    [ { emoji: '🔊', name: { th: 'เสียงเห่า', en: 'Bark' }, meaning: { th: 'เรียกฝูง / ทักทาย', en: 'Herd contact and greeting' } }, { emoji: '💨', name: { th: 'พ่นลม', en: 'Snort' }, meaning: { th: 'เตือนภัย', en: 'Alarm' }, avoid: true } ],
   otter:    [ { emoji: '🐥', name: { th: 'เสียงจิ๊บ', en: 'Chirp' }, meaning: { th: 'ติดต่อกับครอบครัว', en: 'Keeping in touch with the family' } }, { emoji: '🎉', name: { th: 'เสียงแหลมตื่นเต้น', en: 'Squeak' }, meaning: { th: 'ตื่นเต้น / ชวนเล่น', en: 'Excited, let us play' } }, { emoji: '⚠️', name: { th: 'ขู่ฟ่อ', en: 'Hiss' }, meaning: { th: 'เตือนให้ถอยห่าง', en: 'Warning to back off' }, avoid: true } ],
+  hippo:    [ { emoji: '📯', name: { th: 'เสียงฮอนก์', en: 'Wheeze-honk' }, meaning: { th: 'ทักทายฝูง บอกว่าอยู่ตรงนี้', en: 'Greeting the group, saying I am here' } }, { emoji: '😤', name: { th: 'เสียงคำราม', en: 'Grunt' }, meaning: { th: 'ไม่พอใจ อย่าเข้าใกล้', en: 'Annoyed, keep your distance' }, avoid: true } ],
 };

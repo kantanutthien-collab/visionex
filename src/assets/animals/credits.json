@@ -54,5 +54,12 @@
     "artist": "fir0002 / flagstaffotos",
     "license": "GFDL 1.2",
     "ext": "jpg"
+  },
+  "hippo": {
+    "file": "Hippopotamus_amphibius_qtl1.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Hippopotamus_amphibius_qtl1.jpg",
+    "artist": "Quartl",
+    "license": "CC BY-SA 3.0",
+    "ext": "jpg"
   }
 }

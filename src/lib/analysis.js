@@ -4,7 +4,7 @@ export const hColor = h => h >= 80 ? '#27AE60' : h >= 65 ? '#E67E22' : '#E74C3C'
 export const statusOf = h => h >= 80 ? 'healthy' : h >= 65 ? 'watch' : 'attention';
 export const STATUS_STYLE = { healthy: { bg: '#E8F8EF', color: '#1F8A4C' }, watch: { bg: '#FDF1E6', color: '#B35C0F' }, attention: { bg: '#FDEAEA', color: '#C0392B' } };
 export const SEV_STYLE = { info: { bg: '#E8F1FC', color: '#2E86DE' }, warning: { bg: '#FDF1E6', color: '#E67E22' }, urgent: { bg: '#FDEAEA', color: '#E74C3C' } };
-export const CODES = { giraffe: 'GR-01', elephant: 'EL-01', lion: 'LN-01', monkey: 'MK-04', penguin: 'PG-05', tiger: 'TG-02', zebra: 'ZB-03', otter: 'OT-01' };
+export const CODES = { giraffe: 'GR-01', elephant: 'EL-01', lion: 'LN-01', monkey: 'MK-04', penguin: 'PG-05', tiger: 'TG-02', zebra: 'ZB-03', otter: 'OT-01', hippo: 'HP-01' };
 
 // Home camera wall: green = normal, yellow = almost (watch), red = danger
 export function boxStatus(a, alerts = []) {
