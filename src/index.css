@@ -35,8 +35,8 @@ body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-even
 .topbar-admin { background: linear-gradient(90deg, #FFFFFF 0%, #EFEEFF 55%, #E6E4FF 100%); border-bottom-color: #CFC9F5; }
 .topbar-admin::before { background: linear-gradient(90deg, #0F2A4A, #7C5CFC 60%, #2E86DE); }
 
-/* Home camera wall: size the 3x3 grid so all nine boxes fit in one screen height.
+/* Home camera wall: 3x3 grid sized to the screen height, but never narrower than 960px on a computer (or the full width on smaller screens).
    --off = everything above/below the grid, --bar = name bar + borders per box. */
-.wall9 { --off: 330px; --bar: 44px; --gap: 16px; width: 100%; margin-inline: auto;
-  max-width: max(420px, calc(3 * (((100dvh - var(--off) - 2 * var(--gap)) / 3 - var(--bar)) * 16 / 9) + 2 * var(--gap) + 24px)); }
+.wall9 { --off: 300px; --bar: 44px; --gap: 16px; width: 100%; margin-inline: auto;
+  max-width: max(min(100%, 960px), calc(3 * (((100dvh - var(--off) - 2 * var(--gap)) / 3 - var(--bar)) * 16 / 9) + 2 * var(--gap) + 24px)); }
 @media (max-width: 767px) { .wall9 { --off: 390px; --bar: 34px; --gap: 8px; max-width: 100%; } }

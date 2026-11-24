@@ -12,7 +12,7 @@ import ScanCard from '../components/ScanCard.jsx';
 
 export default function Overview({ t, L, tx, animals, cameras, alerts, openProfile, go, selectCamera, mode, tasksPending, tasks, piUrl, setPiUrl, live, startScan, addExample, record = {} }) {
   const ORDER = { danger: 0, watch: 1, ok: 2 };
-  const wall = animals.map(a => ({ a, cam: cameras.find(c => c.id === a.camera), st: boxStatus(a, alerts) })).sort((x, y) => ORDER[x.st] - ORDER[y.st]);
+  const wall = animals.map(a => ({ a, cam: cameras.find(c => c.id === a.camera), st: boxStatus(a, alerts) })).sort((x, y) => (x.cam?.id ?? 99) - (y.cam?.id ?? 99) || ORDER[x.st] - ORDER[y.st]); // CAM 1 → 9 in order
   const HABITATS_ACTIVE = HABITATS.filter(h => h.animals.some(id => animals.some(a => a.id === id)));
   const [showAll, setShowAll] = React.useState(false);
   const [open, setOpen] = React.useState(null); // id of the camera box that is enlarged (click in / click out)
@@ -73,8 +73,8 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
   return (
     <>
       {animals.length > 0 && <div className="flex items-center gap-3 flex-wrap -mb-2">
-        <div className="flex-1 min-w-[160px]"><div className="text-[17px] font-bold">{t.wallTitle} <span className="font-mono text-muted text-sm">{animals.length}</span></div><div className="text-[12px] text-muted">{t.wallSub}</div></div>
-        <div className="flex gap-3 w-full md:w-auto">{['ok', 'watch', 'danger'].map(k => <span key={k} className="flex items-center gap-1.5 text-[12px] font-bold" style={{ color: BOX_STYLE[k].color }}><span className="w-4 h-4 rounded-[5px] border-[3px]" style={{ borderColor: BOX_STYLE[k].color, background: BOX_STYLE[k].bg }} />{t[k === 'ok' ? 'boxOk' : k === 'watch' ? 'boxWatch' : 'boxDanger']}</span>)}</div>
+        <div className="flex-1 min-w-[160px]" title={t.wallSub}><span className="text-[17px] font-bold">{t.wallTitle} <span className="font-mono text-muted text-sm">{animals.length}</span></span><span className="hidden lg:inline text-[12px] text-muted ml-2">{t.wallSub}</span></div>
+        <div className="flex gap-3 md:w-auto">{['ok', 'watch', 'danger'].map(k => <span key={k} className="flex items-center gap-1.5 text-[12px] font-bold" style={{ color: BOX_STYLE[k].color }}><span className="w-4 h-4 rounded-[5px] border-[3px]" style={{ borderColor: BOX_STYLE[k].color, background: BOX_STYLE[k].bg }} />{t[k === 'ok' ? 'boxOk' : k === 'watch' ? 'boxWatch' : 'boxDanger']}</span>)}</div>
       </div>}
       {animals.length === 0 && <EmptyState title={t.emptyTitle} sub={mode === 'admin' ? t.emptySub : t.emptyAskAdmin} action={mode === 'admin' ? t.emptyAdd : undefined} onAction={() => go('manage')} action2={mode === 'admin' ? t.addExample : undefined} onAction2={addExample} />}
       {big && (() => { const { a, cam, st } = big, bs = BOX_STYLE[st], word = t[st === 'ok' ? 'boxOk' : st === 'watch' ? 'boxWatch' : 'boxDanger']; return (
@@ -106,8 +106,8 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
             {!big && <div className="absolute top-1 left-1 md:top-2 md:left-2 flex items-center gap-1 md:gap-1.5 px-1.5 md:px-2 py-0.5 rounded-full bg-black/55 text-white text-[8px] md:text-[10px] font-mono tracking-wide"><span className="w-1.5 h-1.5 rounded-full bg-[#FF5252] animate-pulse2" />CAM {cam ? cam.id : '—'}</div>}
             <div className={`flex items-center gap-1.5 md:gap-2 text-white ${big ? 'px-2 py-1' : 'px-1.5 md:px-3 py-1 md:py-1.5'}`} style={{ background: bs.color }}>
               <span className={big ? 'text-[13px]' : 'text-[12px] md:text-[16px]'}>{a.emoji}</span>
-              <span className={`font-bold truncate flex-1 ${big ? 'text-[11px]' : 'text-[11px] md:text-[14px]'}`}>{tx(a.name)}</span>
-              {!big && <span className="hidden md:inline text-[12px] font-bold px-2 py-0.5 rounded-full bg-white/25 whitespace-nowrap">{word}</span>}
+              <span className={`font-bold truncate flex-1 min-w-0 ${big ? 'text-[11px]' : 'text-[11px] md:text-[15px]'}`}>{tx(a.name)}</span>
+              {!big && <span className="hidden lg:inline shrink-0 text-[12px] font-bold px-2 py-0.5 rounded-full bg-white/25 whitespace-nowrap">{word}</span>}
             </div>
           </button>); })}
       </div>
