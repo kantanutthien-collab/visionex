@@ -22,7 +22,7 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
   const wallRef = React.useRef(null); const [wallH, setWallH] = React.useState(null);
   React.useLayoutEffect(() => {
     const fit = () => { const el = wallRef.current; if (!el) return; const top = el.getBoundingClientRect().top + window.scrollY; const nav = document.querySelector('nav.fixed'); const bottom = (nav ? nav.offsetHeight : 0) + (window.innerWidth < 768 ? 12 : 20); setWallH(Math.max(3 * 110, window.innerHeight - top - bottom)); };
-    // not too flat: a box's picture is at most 2x as wide as it is tall, so cap the grid width and centre it
+    // not too flat: a box's picture is at most 2.6x as wide as it is tall, so cap the grid width and centre it
     fit(); window.addEventListener('resize', fit); return () => window.removeEventListener('resize', fit);
   }, [big, animals.length, mode]);
   const attention = animals.filter(a => a.emotion === 'stressed' || a.emotion === 'agitated');
@@ -79,8 +79,8 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
     </Card>);
   return (
     <>
-      {animals.length > 0 && <div className="flex items-center gap-3 flex-wrap -mb-2">
-        <div className="flex-1 min-w-[160px]" title={t.wallSub}><span className="text-[17px] font-bold">{t.wallTitle} <span className="font-mono text-muted text-sm">{animals.length}</span></span><span className="hidden lg:inline text-[12px] text-muted ml-2">{t.wallSub}</span></div>
+      {animals.length > 0 && <div className="flex items-center gap-3 flex-wrap -mb-3 md:-mb-4 -mt-1 md:-mt-2">
+        <div className="flex-1 min-w-[160px]" title={t.wallSub}><span className="text-[15px] md:text-[16px] font-bold">{t.wallTitle} <span className="font-mono text-muted text-sm">{animals.length}</span></span><span className="hidden lg:inline text-[12px] text-muted ml-2">{t.wallSub}</span></div>
         <div className="flex gap-3 md:w-auto">{['ok', 'watch', 'danger'].map(k => <span key={k} className="flex items-center gap-1.5 text-[12px] font-bold" style={{ color: BOX_STYLE[k].color }}><span className="w-4 h-4 rounded-[5px] border-[3px]" style={{ borderColor: BOX_STYLE[k].color, background: BOX_STYLE[k].bg }} />{t[k === 'ok' ? 'boxOk' : k === 'watch' ? 'boxWatch' : 'boxDanger']}</span>)}</div>
       </div>}
       {animals.length === 0 && <EmptyState title={t.emptyTitle} sub={mode === 'admin' ? t.emptySub : t.emptyAskAdmin} action={mode === 'admin' ? t.emptyAdd : undefined} onAction={() => go('manage')} action2={mode === 'admin' ? t.addExample : undefined} onAction2={addExample} />}
@@ -106,13 +106,13 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
             <button onClick={() => { if (cam) selectCamera(cam.id); go('live'); }} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-ocean text-white text-sm font-semibold"><Video size={15} />{t.navLive}</button>
           </div>
         </Card>); })()}
-      <div ref={big ? null : wallRef} className={`grid ${big ? 'gap-3 md:gap-4 grid-cols-3 md:grid-cols-6' : 'wall9 gap-2 md:gap-3 grid-cols-3 grid-rows-3'}`} style={!big && wallH ? { height: wallH, maxWidth: Math.max(330, 3 * 2 * ((wallH - 2 * 12) / 3 - 46) + 2 * 12 + 24), marginInline: 'auto' } : undefined}>
+      <div ref={big ? null : wallRef} className={`grid ${big ? 'gap-3 md:gap-4 grid-cols-3 md:grid-cols-6' : 'wall9 gap-2 md:gap-3 grid-cols-3 grid-rows-3'}`} style={!big && wallH ? { height: wallH, maxWidth: Math.max(330, 3 * 2.6 * ((wallH - 2 * 12) / 3 - 40) + 2 * 12 + 24), marginInline: 'auto' } : undefined}>
         {wall.map(({ a, cam, st }) => { const bs = BOX_STYLE[st], word = t[st === 'ok' ? 'boxOk' : st === 'watch' ? 'boxWatch' : 'boxDanger']; return (
           <button key={a.id} onClick={() => setOpen(open === a.id ? null : a.id)} className={`relative rounded-2xl overflow-hidden text-left border-[4px] bg-white shadow-card transition hover:-translate-y-1 hover:shadow-lift ${big ? '' : 'flex flex-col min-h-0'} ${st === 'danger' ? 'ring-4 ring-[#E74C3C]/25' : ''} ${open === a.id ? 'ring-4 ring-ocean/40' : ''}`} style={{ borderColor: bs.color, opacity: open && open !== a.id ? 0.7 : 1 }}>
             {big ? (cam ? <CamFeed cam={cam} animals={[a]} label={() => ({ color: bs.color, node: null })} /> : <div className="aspect-video relative"><Photo a={a} className="w-full h-full" /></div>)
               : <div className="flex-1 min-h-0">{cam ? <CamFeed fill cam={cam} animals={[a]} label={() => ({ color: bs.color, node: null })} /> : <Photo a={a} className="w-full h-full" />}</div>}
             {!big && <div className="absolute top-1 left-1 md:top-2 md:left-2 flex items-center gap-1 md:gap-1.5 px-1.5 md:px-2 py-0.5 rounded-full bg-black/55 text-white text-[8px] md:text-[10px] font-mono tracking-wide"><span className="w-1.5 h-1.5 rounded-full bg-[#FF5252] animate-pulse2" />CAM {cam ? cam.id : '—'}</div>}
-            <div className={`flex-none flex items-center gap-1.5 md:gap-2 text-white ${big ? 'px-2 py-1' : 'px-1.5 md:px-3 py-1 md:py-1.5'}`} style={{ background: bs.color }}>
+            <div className={`flex-none flex items-center gap-1.5 md:gap-2 text-white ${big ? 'px-2 py-1' : 'px-1.5 md:px-3 py-1'}`} style={{ background: bs.color }}>
               <span className={big ? 'text-[13px]' : 'text-[12px] md:text-[16px]'}>{a.emoji}</span>
               <span className={`font-bold truncate flex-1 min-w-0 ${big ? 'text-[11px]' : 'text-[11px] md:text-[15px]'}`}>{tx(a.name)}</span>
               {!big && <span className="hidden lg:inline shrink-0 text-[12px] font-bold px-2 py-0.5 rounded-full bg-white/25 whitespace-nowrap">{word}</span>}
