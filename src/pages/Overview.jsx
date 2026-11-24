@@ -72,7 +72,6 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
     </Card>);
   return (
     <>
-      <RolePanel />
       {animals.length > 0 && <div className="flex items-center gap-3 flex-wrap -mb-2">
         <div className="flex-1 min-w-[160px]"><div className="text-[17px] font-bold">{t.wallTitle} <span className="font-mono text-muted text-sm">{animals.length}</span></div><div className="text-[12px] text-muted">{t.wallSub}</div></div>
         <div className="flex gap-3 w-full md:w-auto">{['ok', 'watch', 'danger'].map(k => <span key={k} className="flex items-center gap-1.5 text-[12px] font-bold" style={{ color: BOX_STYLE[k].color }}><span className="w-4 h-4 rounded-[5px] border-[3px]" style={{ borderColor: BOX_STYLE[k].color, background: BOX_STYLE[k].bg }} />{t[k === 'ok' ? 'boxOk' : k === 'watch' ? 'boxWatch' : 'boxDanger']}</span>)}</div>
@@ -100,18 +99,19 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
             <button onClick={() => { if (cam) selectCamera(cam.id); go('live'); }} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-ocean text-white text-sm font-semibold"><Video size={15} />{t.navLive}</button>
           </div>
         </Card>); })()}
-      <div className={`grid gap-3 md:gap-4 ${big ? 'grid-cols-3 md:grid-cols-6' : 'grid-cols-2 md:grid-cols-3'}`}>
+      <div className={`grid ${big ? 'gap-3 md:gap-4 grid-cols-3 md:grid-cols-6' : 'wall9 gap-2 md:gap-4 grid-cols-3'}`}>
         {wall.map(({ a, cam, st }) => { const bs = BOX_STYLE[st], word = t[st === 'ok' ? 'boxOk' : st === 'watch' ? 'boxWatch' : 'boxDanger']; return (
           <button key={a.id} onClick={() => setOpen(open === a.id ? null : a.id)} className={`relative rounded-2xl overflow-hidden text-left border-[4px] bg-white shadow-card transition hover:-translate-y-1 hover:shadow-lift ${st === 'danger' ? 'ring-4 ring-[#E74C3C]/25' : ''} ${open === a.id ? 'ring-4 ring-ocean/40' : ''}`} style={{ borderColor: bs.color, opacity: open && open !== a.id ? 0.7 : 1 }}>
             {cam ? <CamFeed cam={cam} animals={[a]} label={() => ({ color: bs.color, node: null })} /> : <div className="aspect-video relative"><Photo a={a} className="w-full h-full" /></div>}
-            {!big && <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-black/55 text-white text-[10px] font-mono tracking-wide"><span className="w-1.5 h-1.5 rounded-full bg-[#FF5252] animate-pulse2" />CAM {cam ? cam.id : '—'}</div>}
-            <div className={`flex items-center gap-2 text-white ${big ? 'px-2 py-1' : 'px-2.5 md:px-3 py-2'}`} style={{ background: bs.color }}>
-              <span className={big ? 'text-[13px]' : 'text-[16px] md:text-[18px]'}>{a.emoji}</span>
-              <span className={`font-bold truncate flex-1 ${big ? 'text-[11px]' : 'text-[13px] md:text-[15px]'}`}>{tx(a.name)}</span>
-              {!big && <span className="text-[11px] md:text-[12px] font-bold px-2 py-0.5 rounded-full bg-white/25 whitespace-nowrap">{word}</span>}
+            {!big && <div className="absolute top-1 left-1 md:top-2 md:left-2 flex items-center gap-1 md:gap-1.5 px-1.5 md:px-2 py-0.5 rounded-full bg-black/55 text-white text-[8px] md:text-[10px] font-mono tracking-wide"><span className="w-1.5 h-1.5 rounded-full bg-[#FF5252] animate-pulse2" />CAM {cam ? cam.id : '—'}</div>}
+            <div className={`flex items-center gap-1.5 md:gap-2 text-white ${big ? 'px-2 py-1' : 'px-1.5 md:px-3 py-1 md:py-1.5'}`} style={{ background: bs.color }}>
+              <span className={big ? 'text-[13px]' : 'text-[12px] md:text-[16px]'}>{a.emoji}</span>
+              <span className={`font-bold truncate flex-1 ${big ? 'text-[11px]' : 'text-[11px] md:text-[14px]'}`}>{tx(a.name)}</span>
+              {!big && <span className="hidden md:inline text-[12px] font-bold px-2 py-0.5 rounded-full bg-white/25 whitespace-nowrap">{word}</span>}
             </div>
           </button>); })}
       </div>
+      <RolePanel />
       <Card className="!rounded-[18px] overflow-hidden border-2" style={{ borderColor: items.length ? SEV[items[0].sev].border : '#BDE8CF' }}>
         <div className="px-4 md:px-5 py-3.5 flex items-center gap-3 border-b border-[#EEF2F7]">
           <div className="w-10 h-10 rounded-xl grid place-items-center text-white flex-none" style={{ background: items.length ? SEV[items[0].sev].color : '#27AE60' }}>{items.length ? <Siren size={20} /> : <CheckCircle2 size={20} />}</div>
