@@ -32,6 +32,9 @@ const FACTS = {
   zebra:    { th: 'ม้าลายแต่ละตัวมีลายไม่เหมือนกันเลย ลูกม้าลายจำแม่ได้จากลาย', en: 'No two zebras have the same stripes. Foals recognise their mother by her pattern.' },
   otter:    { th: 'นากเล็กเล็บสั้นเป็นนากที่ตัวเล็กที่สุดในโลก และใช้มือคลำหาอาหารใต้น้ำ', en: 'The small-clawed otter is the world\'s smallest otter and feels for food underwater with its paws.' },
   hippo:    { th: 'ฮิปโปอยู่ในน้ำได้ทั้งวันเพื่อกันแดด และขึ้นมากินหญ้าตอนกลางคืนได้ถึง 40 กก.', en: 'Hippos stay in water all day to keep cool, then graze up to 40 kg of grass at night.' },
+  flamingo: { th: 'ฟลามิงโกมีสีชมพูเพราะกินกุ้งและสาหร่ายที่มีสารสีแดง ถ้าไม่ได้กินขนจะซีดเป็นสีขาว', en: 'Flamingos are pink because of the shrimp and algae they eat. Without them their feathers fade to white.' },
+  crocodile: { th: 'จระเข้น้ำเค็มเป็นสัตว์เลื้อยคลานที่ใหญ่ที่สุดในโลก และอยู่ได้หลายเดือนโดยไม่กินอาหาร', en: 'Saltwater crocodiles are the largest reptiles on Earth and can go months without eating.' },
+  kangaroo: { th: 'จิงโจ้แดงกระโดดได้ไกลถึง 8 เมตรในครั้งเดียว และเดินถอยหลังไม่ได้', en: 'A red kangaroo can jump 8 metres in one hop, but it cannot walk backwards.' },
 };
 const GENERIC_SOUNDS = [ { emoji: '🎵', name: { th: 'เสียงเรียก', en: 'Contact call' }, meaning: { th: 'ใช้ติดต่อกับพวกเดียวกัน', en: 'Used to keep in touch with its group' } }, { emoji: '⚠️', name: { th: 'เสียงเตือน', en: 'Alarm call' }, meaning: { th: 'เตือนภัย', en: 'Warns of danger' }, avoid: true } ];
 

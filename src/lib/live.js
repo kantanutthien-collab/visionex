@@ -31,7 +31,7 @@ export function piCamera(live) {
   };
 }
 
-const EMOJI = { hippo: '🦛', giraffe: '🦒', zebra: '🦓', elephant: '🐘', lion: '🦁', tiger: '🐯', monkey: '🐒', macaque: '🐒', penguin: '🐧', otter: '🦦', bear: '🐻', bird: '🐦', cat: '🐱', dog: '🐶', horse: '🐴', cow: '🐄', sheep: '🐑' };
+const EMOJI = { hippo: '🦛', flamingo: '🦩', crocodile: '🐊', kangaroo: '🦘', giraffe: '🦒', zebra: '🦓', elephant: '🐘', lion: '🦁', tiger: '🐯', monkey: '🐒', macaque: '🐒', penguin: '🐧', otter: '🦦', bear: '🐻', bird: '🐦', cat: '🐱', dog: '🐶', horse: '🐴', cow: '🐄', sheep: '🐑' };
 const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
 
 // Crop the detection out of the latest Pi frame to use as the animal's photo (small JPEG data URL)

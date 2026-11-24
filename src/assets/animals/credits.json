@@ -61,5 +61,26 @@
     "artist": "Quartl",
     "license": "CC BY-SA 3.0",
     "ext": "jpg"
+  },
+  "flamingo": {
+    "file": "Flamingo_(Phoenicopterus_roseus),_Tierpark_Hellabrunn,_Múnich,_Alemania,_2012-06-17,_DD_04.JPG",
+    "page": "https://commons.wikimedia.org/wiki/File:Flamingo_(Phoenicopterus_roseus),_Tierpark_Hellabrunn,_M%C3%BAnich,_Alemania,_2012-06-17,_DD_04.JPG",
+    "artist": "Diego Delso",
+    "license": "CC BY-SA 3.0",
+    "ext": "jpg"
+  },
+  "crocodile": {
+    "file": "Buaya_muara_Crocodylus_porosus_Bandung_Zoo_3.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Buaya_muara_Crocodylus_porosus_Bandung_Zoo_3.jpg",
+    "artist": "Ilham.nurwansah",
+    "license": "CC BY-SA 4.0",
+    "ext": "jpg"
+  },
+  "kangaroo": {
+    "file": "035_Zoo_de_Barcelona,_cangur_vermell_(Macropus_rufus).jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:035_Zoo_de_Barcelona,_cangur_vermell_(Macropus_rufus).jpg",
+    "artist": "Enric",
+    "license": "CC BY-SA 4.0",
+    "ext": "jpg"
   }
 }

@@ -8,13 +8,16 @@ import tiger from '../assets/animals/tiger.jpg';
 import zebra from '../assets/animals/zebra.jpg';
 import otter from '../assets/animals/otter.jpg';
 import hippo from '../assets/animals/hippo.jpg';
+import flamingo from '../assets/animals/flamingo.jpg';
+import crocodile from '../assets/animals/crocodile.jpg';
+import kangaroo from '../assets/animals/kangaroo.jpg';
 import CREDITS from '../assets/animals/credits.json';
 
-export const PHOTOS = { giraffe, elephant, lion, monkey, penguin, tiger, zebra, otter, hippo };
+export const PHOTOS = { giraffe, elephant, lion, monkey, penguin, tiger, zebra, otter, hippo, flamingo, crocodile, kangaroo };
 // width / height of each file, used to map bounding boxes onto the 16:9 camera feed
-export const PHOTO_ASPECT = { giraffe: 1107 / 1400, elephant: 1400 / 933, lion: 1400 / 934, monkey: 1, penguin: 933 / 1400, tiger: 1400 / 1050, zebra: 1400 / 933, otter: 1400 / 933, hippo: 1400 / 953 };
+export const PHOTO_ASPECT = { giraffe: 1107 / 1400, elephant: 1400 / 933, lion: 1400 / 934, monkey: 1, penguin: 933 / 1400, tiger: 1400 / 1050, zebra: 1400 / 933, otter: 1400 / 933, hippo: 1400 / 953, flamingo: 1400 / 1066, crocodile: 1400 / 933, kangaroo: 1400 / 1050 };
 // where to anchor the crop when a photo is used as a card header (object-position)
-export const PHOTO_FOCUS = { giraffe: '30% 12%', elephant: '50% 40%', lion: '50% 45%', monkey: '50% 35%', penguin: '45% 22%', tiger: '50% 45%', zebra: '50% 45%', otter: '50% 45%', hippo: '55% 50%' };
+export const PHOTO_FOCUS = { giraffe: '30% 12%', elephant: '50% 40%', lion: '50% 45%', monkey: '50% 35%', penguin: '45% 22%', tiger: '50% 45%', zebra: '50% 45%', otter: '50% 45%', hippo: '55% 50%', flamingo: '55% 55%', crocodile: '45% 60%', kangaroo: '45% 50%' };
 export { CREDITS };
 
 // Helpers that also work for animals / cameras added by the user (photo = data URL stored in localStorage)

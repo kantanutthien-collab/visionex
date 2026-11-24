@@ -19,10 +19,10 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
   React.useEffect(() => { const k = e => e.key === 'Escape' && setOpen(null); window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k); }, []);
   const big = open ? wall.find(w => w.a.id === open) : null;
   // Exact fit: the 3x3 wall takes exactly the screen height left below the menus (and above the phone tab bar)
-  const wallRef = React.useRef(null); const [wallH, setWallH] = React.useState(null);
+  const wallRef = React.useRef(null); const [wallH, setWallH] = React.useState(null); const [wallCols, setWallCols] = React.useState(4);
   React.useLayoutEffect(() => {
-    const fit = () => { const el = wallRef.current; if (!el) return; const top = el.getBoundingClientRect().top + window.scrollY; const nav = document.querySelector('nav.fixed'); const bottom = (nav ? nav.offsetHeight : 0) + (window.innerWidth < 768 ? 12 : 20); setWallH(Math.max(3 * 110, window.innerHeight - top - bottom)); };
-    // not too flat: a box's picture is at most 2.6x as wide as it is tall, so cap the grid width and centre it
+    const fit = () => { const el = wallRef.current; if (!el) return; const top = el.getBoundingClientRect().top + window.scrollY; const nav = document.querySelector('nav.fixed'); const bottom = (nav ? nav.offsetHeight : 0) + (window.innerWidth < 768 ? 12 : 20); setWallH(Math.max(3 * 110, window.innerHeight - top - bottom)); setWallCols(window.innerWidth >= 768 ? 4 : 3); };
+    // 12 boxes: 4 x 3 on computers, 3 x 4 on phones; a box's picture is at most 2.2x as wide as it is tall
     fit(); window.addEventListener('resize', fit); return () => window.removeEventListener('resize', fit);
   }, [big, animals.length, mode]);
   const attention = animals.filter(a => a.emotion === 'stressed' || a.emotion === 'agitated');
@@ -106,7 +106,7 @@ export default function Overview({ t, L, tx, animals, cameras, alerts, openProfi
             <button onClick={() => { if (cam) selectCamera(cam.id); go('live'); }} className="flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] bg-ocean text-white text-sm font-semibold"><Video size={15} />{t.navLive}</button>
           </div>
         </Card>); })()}
-      <div ref={big ? null : wallRef} className={`grid ${big ? 'gap-3 md:gap-4 grid-cols-3 md:grid-cols-6' : 'wall9 gap-2 md:gap-3 grid-cols-3 grid-rows-3'}`} style={!big && wallH ? { height: wallH, maxWidth: Math.max(330, 3 * 2.6 * ((wallH - 2 * 12) / 3 - 40) + 2 * 12 + 24), marginInline: 'auto' } : undefined}>
+      <div ref={big ? null : wallRef} className={`grid ${big ? 'gap-3 md:gap-4 grid-cols-3 md:grid-cols-6' : 'wall9 gap-2 md:gap-3 grid-cols-3 grid-rows-4 md:grid-cols-4 md:grid-rows-3'}`} style={!big && wallH ? { height: wallH, maxWidth: wallCols === 4 ? Math.max(330, 4 * 2.2 * ((wallH - 2 * 12) / 3 - 40) + 3 * 12 + 32) : undefined, marginInline: 'auto' } : undefined}>
         {wall.map(({ a, cam, st }) => { const bs = BOX_STYLE[st], word = t[st === 'ok' ? 'boxOk' : st === 'watch' ? 'boxWatch' : 'boxDanger']; return (
           <button key={a.id} onClick={() => setOpen(open === a.id ? null : a.id)} className={`relative rounded-2xl overflow-hidden text-left border-[4px] bg-white shadow-card transition hover:-translate-y-1 hover:shadow-lift ${big ? '' : 'flex flex-col min-h-0'} ${st === 'danger' ? 'ring-4 ring-[#E74C3C]/25' : ''} ${open === a.id ? 'ring-4 ring-ocean/40' : ''}`} style={{ borderColor: bs.color, opacity: open && open !== a.id ? 0.7 : 1 }}>
             {big ? (cam ? <CamFeed cam={cam} animals={[a]} label={() => ({ color: bs.color, node: null })} /> : <div className="aspect-video relative"><Photo a={a} className="w-full h-full" /></div>)

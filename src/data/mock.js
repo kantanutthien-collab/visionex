@@ -44,6 +44,15 @@ export const ANIMALS = [
   { id: 'hippo', emoji: '🦛', tint: '#E9E1EA', name: { th: 'อ้วนกลม', en: 'Uan' }, species: { th: 'ฮิปโปโปเตมัส', en: 'Hippopotamus' }, age: 12, enclosure: { th: 'บ่อฮิปโป', en: 'Hippo Pool' }, emotion: 'calm', health: 90, minutesAgo: 3, camera: 9,
     eating: [240, 245, 238, 250, 242, 246, 244], activity: [40, 42, 39, 41, 43, 40, 41], resting: [15, 15.5, 15, 14.8, 15.2, 15, 15.1], pacing: [0, 0, 1, 0, 0, 0, 0], drinking: [30, 32, 30, 31, 30, 33, 31], playing: [15, 18, 14, 16, 20, 17, 16],
     timeline: ['calm', 'calm', 'calm', 'calm', 'playful', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm'] },
+  { id: 'flamingo', emoji: '🦩', tint: '#FBE3E8', name: { th: 'ชมพู', en: 'Chompoo' }, species: { th: 'นกฟลามิงโก', en: 'Greater flamingo' }, age: 6, enclosure: { th: 'ทะเลสาบฟลามิงโก', en: 'Flamingo Lake' }, emotion: 'calm', health: 91, minutesAgo: 2, camera: 10,
+    eating: [95, 98, 92, 96, 100, 97, 96], activity: [62, 64, 60, 63, 65, 62, 63], resting: [9, 9, 9.5, 9, 8.8, 9, 9], pacing: [0, 0, 0, 1, 0, 0, 0], drinking: [14, 15, 14, 16, 15, 14, 15], playing: [40, 42, 38, 45, 44, 41, 43],
+    timeline: ['calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm'] },
+  { id: 'crocodile', emoji: '🐊', tint: '#E3EADB', name: { th: 'จระเข้ใหญ่', en: 'Jorakay' }, species: { th: 'จระเข้น้ำเค็ม', en: 'Saltwater crocodile' }, age: 18, enclosure: { th: 'บึงจระเข้', en: 'Crocodile Swamp' }, emotion: 'calm', health: 89, minutesAgo: 2, camera: 11,
+    eating: [20, 0, 18, 0, 22, 0, 19], activity: [18, 15, 20, 16, 19, 17, 18], resting: [18, 18.5, 18, 18.2, 17.8, 18, 18.1], pacing: [0, 0, 0, 0, 0, 0, 0], drinking: [6, 5, 6, 5, 6, 6, 5], playing: [4, 3, 5, 4, 3, 4, 4],
+    timeline: ['calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm'] },
+  { id: 'kangaroo', emoji: '🦘', tint: '#F6E6D3', name: { th: 'กระโดด', en: 'Kradot' }, species: { th: 'จิงโจ้แดง', en: 'Red kangaroo' }, age: 5, enclosure: { th: 'ลานจิงโจ้', en: 'Kangaroo Walk' }, emotion: 'playful', health: 94, minutesAgo: 2, camera: 12,
+    eating: [210, 215, 205, 212, 218, 214, 216], activity: [70, 72, 68, 71, 74, 73, 75], resting: [12, 12, 12.5, 12, 11.8, 12, 11.9], pacing: [0, 1, 0, 0, 0, 1, 0], drinking: [12, 13, 12, 14, 13, 12, 13], playing: [55, 60, 52, 58, 62, 59, 63],
+    timeline: ['calm', 'calm', 'calm', 'playful', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm', 'calm'] },
 ];
 
 export const ALERTS = [
@@ -70,6 +79,9 @@ export const CAMERAS = [
   { id: 7, name: { th: 'บ่อเพนกวิน', en: 'Penguin Pool' },                  photo: 'penguin',  boxes: [ { animalId: 'penguin',  tag: 'Penguin #5',  conf: 96, x: 18, y: 16, w: 78, h: 65 } ] },
   { id: 8, name: { th: 'ลำธารนาก', en: 'Otter Creek' },                     photo: 'otter',    boxes: [ { animalId: 'otter',    tag: 'Otter #1',    conf: 91, x: 24, y: 18, w: 66, h: 55 } ] },
   { id: 9, name: { th: 'บ่อฮิปโป', en: 'Hippo Pool' },                      photo: 'hippo',    boxes: [ { animalId: 'hippo',    tag: 'Hippo #1',    conf: 94, x: 27, y: 1,  w: 73, h: 97 } ] },
+  { id: 10, name: { th: 'ทะเลสาบฟลามิงโก', en: 'Flamingo Lake' },          photo: 'flamingo', boxes: [ { animalId: 'flamingo', tag: 'Flamingo #4', conf: 86, x: 47, y: 40, w: 20, h: 50 } ] },
+  { id: 11, name: { th: 'บึงจระเข้', en: 'Crocodile Swamp' },               photo: 'crocodile', boxes: [ { animalId: 'crocodile', tag: 'Crocodile #1', conf: 95, x: 6, y: 25, w: 78, h: 73 } ] },
+  { id: 12, name: { th: 'ลานจิงโจ้', en: 'Kangaroo Walk' },                 photo: 'kangaroo', boxes: [ { animalId: 'kangaroo', tag: 'Kangaroo #2', conf: 93, x: 14, y: 22, w: 82, h: 52 } ] },
 ];
 
 export const BEHAVIOR_SEED = {
@@ -82,6 +94,9 @@ export const BEHAVIOR_SEED = {
   7: [ ['09:38:22', 'penguin', 'eating'], ['09:34:47', 'penguin', 'walking'], ['09:25:36', 'penguin', 'resting'], ['09:13:10', 'penguin', 'playing'] ],
   8: [ ['09:41:05', 'otter', 'playing'], ['09:30:10', 'otter', 'eating'], ['09:20:44', 'otter', 'playing'], ['09:08:29', 'otter', 'resting'] ],
   9: [ ['09:40:12', 'hippo', 'resting'], ['09:22:40', 'hippo', 'eating'], ['09:05:33', 'hippo', 'walking'], ['08:50:08', 'hippo', 'drinking'] ],
+  10: [ ['09:41:20', 'flamingo', 'eating'], ['09:30:02', 'flamingo', 'walking'], ['09:12:45', 'flamingo', 'resting'] ],
+  11: [ ['09:38:10', 'crocodile', 'resting'], ['09:01:44', 'crocodile', 'walking'], ['08:40:30', 'crocodile', 'resting'] ],
+  12: [ ['09:42:05', 'kangaroo', 'playing'], ['09:33:18', 'kangaroo', 'eating'], ['09:20:51', 'kangaroo', 'resting'] ],
 };
 
 export const VISITORS = [
@@ -114,6 +129,9 @@ export const DEX = {
   zebra:    { code: 'ZB-03', pattern: { th: 'ลายทางขาว-ดำ', en: 'Black and white stripes' }, size: { th: 'สูง 1.4 ม.', en: 'Height 1.4 m' }, coat: { th: 'ขาว-ดำ', en: 'Black / white' }, mark: { th: 'ลายสะโพกซ้ายแยกเป็นสองแฉก', en: 'Forked stripe left hip' }, signature: [0.95, 0.60, 0.15, 0.85, 0.50, 0.70, 0.60, 0.95], accuracy: 96, sightings: 13 },
   otter:    { code: 'OT-01', pattern: { th: 'ขนสีเดียว คางขาว', en: 'Solid coat, pale chin' }, size: { th: 'ยาว 60 ซม.', en: 'Length 60 cm' }, coat: { th: 'น้ำตาลเข้ม', en: 'Dark brown' }, mark: { th: 'เล็บหน้าซ้ายสั้นกว่าปกติ', en: 'Short claw left forepaw' }, signature: [0.08, 0.15, 0.68, 0.35, 0.80, 0.42, 0.85, 0.28], accuracy: 90, sightings: 27 },
   hippo:    { code: 'HP-01', pattern: { th: 'ผิวเรียบสีเทาอมชมพู', en: 'Smooth grey-pink skin' }, size: { th: 'สูง 1.5 ม.', en: 'Height 1.5 m' }, coat: { th: 'เทาอมชมพู', en: 'Grey-pink' }, mark: { th: 'รอยแผลเป็นที่หูซ้าย', en: 'Scar on left ear' }, signature: [0.70, 0.10, 0.95, 0.20, 0.30, 0.88, 0.12, 0.60], accuracy: 93, sightings: 18 },
+  flamingo: { code: 'FL-04', pattern: { th: 'ขนสีชมพู ปากงอ', en: 'Pink plumage, bent bill' }, size: { th: 'สูง 1.2 ม.', en: 'Height 1.2 m' }, coat: { th: 'ชมพูอ่อน', en: 'Pale pink' }, mark: { th: 'ห่วงขาสีเขียวขาขวา', en: 'Green ring on right leg' }, signature: [0.20, 0.85, 0.30, 0.90, 0.15, 0.40, 0.70, 0.25], accuracy: 86, sightings: 22 },
+  crocodile: { code: 'CR-01', pattern: { th: 'เกล็ดหนาเป็นแถว', en: 'Rows of thick scutes' }, size: { th: 'ยาว 4 ม.', en: 'Length 4 m' }, coat: { th: 'เขียวเทา', en: 'Grey-green' }, mark: { th: 'ปลายหางขาด', en: 'Tail tip missing' }, signature: [0.85, 0.30, 0.20, 0.75, 0.60, 0.15, 0.40, 0.90], accuracy: 95, sightings: 15 },
+  kangaroo: { code: 'KG-02', pattern: { th: 'ขนสีแดงอิฐ หางยาว', en: 'Red-brown fur, long tail' }, size: { th: 'สูง 1.4 ม.', en: 'Height 1.4 m' }, coat: { th: 'น้ำตาลแดง', en: 'Red-brown' }, mark: { th: 'หูซ้ายมีรอยบาก', en: 'Notch in left ear' }, signature: [0.45, 0.60, 0.80, 0.10, 0.55, 0.30, 0.20, 0.65], accuracy: 92, sightings: 20 },
 };
 export const DEX_FEATURES = [ { th: 'ลวดลาย', en: 'Pattern' }, { th: 'ขนาดตัว', en: 'Body size' }, { th: 'โทนสีขน', en: 'Coat tone' }, { th: 'สัดส่วนขา', en: 'Limb ratio' }, { th: 'ท่าเดิน', en: 'Gait' }, { th: 'รูปหัว', en: 'Head shape' }, { th: 'หาง', en: 'Tail' }, { th: 'ตำหนิ', en: 'Markings' } ];
 
@@ -133,6 +151,9 @@ export const HABITATS = [
   { id: 'penguin',   name: { th: 'บ่อเพนกวิน', en: 'Penguin Pool' },          animals: ['penguin'], camera: 7, aquatic: true,  sensors: [ { key: 'waterTemp', value: 17.2, unit: '°C', range: [12, 20] }, { key: 'ph', value: 7.6, unit: '', range: [7.2, 8.2] }, { key: 'chlorine', value: 0.4, unit: 'ppm', range: [0.2, 0.8] }, { key: 'temp', value: 24.1, unit: '°C', range: [15, 28] } ] },
   { id: 'otter',     name: { th: 'ลำธารนาก', en: 'Otter Creek' },             animals: ['otter'], camera: 8, aquatic: true,  sensors: [ { key: 'waterTemp', value: 26.0, unit: '°C', range: [20, 28] }, { key: 'ph', value: 7.0, unit: '', range: [6.5, 8.0] }, { key: 'turbidity', value: 12, unit: 'NTU', range: [0, 25] }, { key: 'temp', value: 29.8, unit: '°C', range: [20, 32] } ] },
   { id: 'hippo',     name: { th: 'บ่อฮิปโป', en: 'Hippo Pool' },              animals: ['hippo'], camera: 9, aquatic: true,  sensors: [ { key: 'waterTemp', value: 27.5, unit: '°C', range: [22, 30] }, { key: 'ph', value: 7.2, unit: '', range: [6.5, 8.0] }, { key: 'waterLevel', value: 88, unit: '%', range: [60, 100] }, { key: 'temp', value: 31.0, unit: '°C', range: [20, 35] } ] },
+  { id: 'flamingo',  name: { th: 'ทะเลสาบฟลามิงโก', en: 'Flamingo Lake' },  animals: ['flamingo'], camera: 10, aquatic: true,  sensors: [ { key: 'waterTemp', value: 25.5, unit: '°C', range: [18, 30] }, { key: 'ph', value: 8.1, unit: '', range: [7.0, 9.0] }, { key: 'temp', value: 30.2, unit: '°C', range: [15, 35] } ] },
+  { id: 'crocodile', name: { th: 'บึงจระเข้', en: 'Crocodile Swamp' },     animals: ['crocodile'], camera: 11, aquatic: true,  sensors: [ { key: 'waterTemp', value: 29.0, unit: '°C', range: [26, 33] }, { key: 'turbidity', value: 18, unit: 'NTU', range: [0, 40] }, { key: 'temp', value: 32.4, unit: '°C', range: [25, 36] } ] },
+  { id: 'kangaroo',  name: { th: 'ลานจิงโจ้', en: 'Kangaroo Walk' },       animals: ['kangaroo'], camera: 12, aquatic: false, sensors: [ { key: 'temp', value: 31.8, unit: '°C', range: [15, 35] }, { key: 'humidity', value: 55, unit: '%', range: [30, 70] }, { key: 'shade', value: 41, unit: '%', range: [30, 100] } ] },
 ];
 
 // ---------- Keeper routine tasks (scheduled checks for today) ----------
@@ -144,6 +165,7 @@ export const ROUTINE_TASKS = [
   { id: 'r5', time: '11:00', animalId: 'giraffe',  title: { th: 'ให้กิ่งไม้สดรอบสาย', en: 'Late-morning browse feeding' } },
   { id: 'r6', time: '13:00', animalId: 'otter',    title: { th: 'ตรวจการเปลี่ยนน้ำลำธาร', en: 'Creek water change check' } },
   { id: 'r9', time: '15:30', animalId: 'hippo',    title: { th: 'ตรวจคุณภาพน้ำบ่อฮิปโป', en: 'Hippo pool water quality check' } },
+  { id: 'r10', time: '16:00', animalId: 'crocodile', title: { th: 'ตรวจอุณหภูมิน้ำบึงจระเข้', en: 'Crocodile swamp water temperature check' } },
   { id: 'r7', time: '15:00', animalId: 'tiger',    title: { th: 'ตรวจคอกรอบบ่าย', en: 'Afternoon enclosure check' } },
   { id: 'r8', time: '16:30', animalId: null,       title: { th: 'นับจำนวนสัตว์รอบเย็น', en: 'Evening headcount' } },
 ];
@@ -159,6 +181,9 @@ export const ENRICHMENT = {
   zebra:    [ { th: 'โปรยอาหารกระจายทั่วคอก', en: 'Scatter feeding across the yard' }, { th: 'พื้นที่ทรายใหม่สำหรับกลิ้งตัว', en: 'Fresh sand area for rolling' }, { th: 'แปรงขัดตัวติดเสา', en: 'Post-mounted grooming brush' } ],
   otter:    [ { th: 'ก้อนน้ำแข็งใส่ปลา', en: 'Fish frozen in ice cubes' }, { th: 'กองก้อนกรวดใหม่', en: 'Fresh pebble pile' }, { th: 'ท่อ PVC ใส่อาหาร', en: 'PVC feeder tube' } ],
   hippo:    [ { th: 'แตงโมทั้งลูกลอยน้ำ', en: 'Whole watermelon floating in the pool' }, { th: 'ย้ายจุดให้หญ้าแห้ง', en: 'Move the hay feeding spot' }, { th: 'พ่นน้ำเล่นตอนบ่าย', en: 'Afternoon sprinkler play' } ],
+  flamingo: [ { th: 'กระจกให้ส่องดูฝูง', en: 'Mirror to make the flock look bigger' }, { th: 'โรยอาหารในน้ำตื้น', en: 'Scatter food in shallow water' }, { th: 'กองโคลนใหม่ทำรัง', en: 'Fresh mud mounds for nesting' } ],
+  crocodile: [ { th: 'ซ่อนอาหารใต้น้ำ', en: 'Hide food underwater' }, { th: 'ลากกลิ่นเหยื่อบนฝั่ง', en: 'Prey scent trail on the bank' }, { th: 'ลอยลูกบอลใหญ่ในบึง', en: 'Large floating ball in the swamp' } ],
+  kangaroo: [ { th: 'ซ่อนผลไม้ในกองหญ้า', en: 'Hide fruit in hay piles' }, { th: 'ย้ายตำแหน่งที่ให้อาหาร', en: 'Move the feeding spot' }, { th: 'กองทรายสำหรับนอนกลิ้ง', en: 'Sand pile for rolling' } ],
 };
 export const ENRICHMENT_LOG = [
   { id: 'e1', animalId: 'tiger',    activity: { th: 'ก้อนน้ำแข็งเนื้อแช่แข็ง', en: 'Frozen meat ice block' }, day: { th: 'เมื่อวาน', en: 'Yesterday' }, time: '14:00', before: { activity: 44, pacing: 4 }, after: { activity: 58, pacing: 2 }, response: 'positive' },
@@ -174,6 +199,7 @@ export const HOURLY = {
   penguin:  [52, 76, 86, 80, 70, 64, 62, 70, 84, 88, 78, 64, 50], tiger:    [60, 55, 40, 28, 20, 16, 16, 20, 32, 48, 62, 66, 58],
   zebra:    [52, 70, 76, 70, 60, 52, 48, 54, 66, 74, 74, 64, 52], otter:    [58, 86, 94, 92, 86, 78, 74, 82, 92, 94, 88, 74, 60],
   hippo:    [30, 45, 50, 42, 34, 28, 26, 30, 40, 52, 56, 48, 36],
+  flamingo: [60, 72, 70, 64, 58, 54, 52, 56, 62, 70, 72, 66, 58], crocodile: [10, 14, 20, 26, 24, 18, 16, 20, 24, 22, 16, 12, 10], kangaroo: [70, 80, 66, 50, 40, 34, 32, 38, 52, 70, 82, 78, 64],
 };
 export const OBSERVATIONS = {
   lion:     [ { daysAgo: 0, by: 'vet',    text: { th: 'ตรวจร่างกายเบื้องต้น ไม่พบบาดแผล แต่กินน้อยและเดินวนบ่อย นัดตรวจเลือดพรุ่งนี้', en: 'Physical exam: no wounds found, but low appetite and frequent pacing. Blood test scheduled tomorrow.' } }, { daysAgo: 1, by: 'keeper', text: { th: 'เหลืออาหาร 25% เดินวนช่วงที่มีกลุ่มนักเรียนเสียงดัง', en: 'Left 25% of food. Paced while a loud student group was nearby.' } }, { daysAgo: 3, by: 'keeper', text: { th: 'ปกติ กินครบ นอนกลางวันตามปกติ', en: 'Normal. Full portion eaten, usual midday rest.' } } ],
@@ -185,6 +211,9 @@ export const OBSERVATIONS = {
   zebra:    [ { daysAgo: 4, by: 'keeper', text: { th: 'กลิ้งตัวในทรายใหม่ทันทีที่เปิดพื้นที่', en: 'Rolled in the fresh sand as soon as it was opened.' } } ],
   otter:    [ { daysAgo: 1, by: 'keeper', text: { th: 'เล่นกับก้อนน้ำแข็งใส่ปลานาน 25 นาที', en: 'Played with fish ice cubes for 25 min.' } } ],
   hippo:    [ { daysAgo: 2, by: 'keeper', text: { th: 'ขึ้นจากน้ำมากินหญ้าตอนเย็นตามปกติ', en: 'Came out of the water to graze in the evening as usual.' } } ],
+  flamingo: [ { daysAgo: 1, by: 'keeper', text: { th: 'ฝูงเดินรวมกลุ่มดี ยืนขาเดียวพักตามปกติ', en: 'Flock moving together well, resting on one leg as usual.' } } ],
+  crocodile: [ { daysAgo: 3, by: 'vet', text: { th: 'กินไก่ 2 ตัว ผิวหนังปกติ', en: 'Ate 2 chickens, skin looks normal.' } } ],
+  kangaroo: [ { daysAgo: 1, by: 'keeper', text: { th: 'กระโดดเล่นช่วงเช้ามาก พักใต้ร่มตอนเที่ยง', en: 'Very active hopping in the morning, rested in the shade at noon.' } } ],
 };
 
 // ---------- Guest "talk to the animal" sound library (template: no audio files yet). avoid = true means the call can alarm the animal ----------
@@ -198,4 +227,7 @@ export const SOUNDS = {
   zebra:    [ { emoji: '🔊', name: { th: 'เสียงเห่า', en: 'Bark' }, meaning: { th: 'เรียกฝูง / ทักทาย', en: 'Herd contact and greeting' } }, { emoji: '💨', name: { th: 'พ่นลม', en: 'Snort' }, meaning: { th: 'เตือนภัย', en: 'Alarm' }, avoid: true } ],
   otter:    [ { emoji: '🐥', name: { th: 'เสียงจิ๊บ', en: 'Chirp' }, meaning: { th: 'ติดต่อกับครอบครัว', en: 'Keeping in touch with the family' } }, { emoji: '🎉', name: { th: 'เสียงแหลมตื่นเต้น', en: 'Squeak' }, meaning: { th: 'ตื่นเต้น / ชวนเล่น', en: 'Excited, let us play' } }, { emoji: '⚠️', name: { th: 'ขู่ฟ่อ', en: 'Hiss' }, meaning: { th: 'เตือนให้ถอยห่าง', en: 'Warning to back off' }, avoid: true } ],
   hippo:    [ { emoji: '📯', name: { th: 'เสียงฮอนก์', en: 'Wheeze-honk' }, meaning: { th: 'ทักทายฝูง บอกว่าอยู่ตรงนี้', en: 'Greeting the group, saying I am here' } }, { emoji: '😤', name: { th: 'เสียงคำราม', en: 'Grunt' }, meaning: { th: 'ไม่พอใจ อย่าเข้าใกล้', en: 'Annoyed, keep your distance' }, avoid: true } ],
+  flamingo: [ { emoji: '📢', name: { th: 'เสียงฮอนก์', en: 'Honk' }, meaning: { th: 'คุยกันในฝูง', en: 'Chatting with the flock' } }, { emoji: '⚠️', name: { th: 'เสียงเตือนภัย', en: 'Alarm honk' }, meaning: { th: 'มีอันตราย ทั้งฝูงจะบินหนี', en: 'Danger, the flock will fly off' }, avoid: true } ],
+  crocodile: [ { emoji: '🌊', name: { th: 'เสียงคำรามต่ำ', en: 'Low bellow' }, meaning: { th: 'ประกาศอาณาเขต', en: 'Announcing its territory' } }, { emoji: '😤', name: { th: 'เสียงขู่ฟ่อ', en: 'Hiss' }, meaning: { th: 'อย่าเข้าใกล้', en: 'Stay away' }, avoid: true } ],
+  kangaroo: [ { emoji: '🫢', name: { th: 'เสียงคลิก', en: 'Click' }, meaning: { th: 'แม่เรียกลูก', en: 'A mother calling her joey' } }, { emoji: '🦶', name: { th: 'กระทืบเท้า', en: 'Foot thump' }, meaning: { th: 'เตือนว่ามีอันตราย', en: 'Warning of danger' }, avoid: true } ],
 };

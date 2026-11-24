@@ -77,7 +77,7 @@ On phones the three main tabs are a bottom bar; the sub-tabs scroll horizontally
 
 The app starts **empty**: no animals, cameras or tasks. Animals appear automatically when the Raspberry Pi camera
 detects them (a crop of the camera frame becomes the animal's photo), or you add them by hand on Add / Edit Animals.
-The app starts with 9 example animals in 9 zones (giraffe, zebra, elephant, lion, tiger, macaque, penguin, otter, hippo); **Load demo zoo** on that page restores them; **Remove all** clears everything. Edits (animals, cameras, tasks, notes, enrichment log,
+The app starts with 12 example animals in 12 zones (giraffe, zebra, elephant, tiger, lion, macaque, penguin, otter, hippo, flamingo, crocodile, kangaroo; CAM 1-12); **Load demo zoo** on that page restores them; **Remove all** clears everything. Edits (animals, cameras, tasks, notes, enrichment log,
 language, mode) persist in the browser's localStorage. "Reset to defaults" is on the Add / Edit Animals page.
 
 ## Structure

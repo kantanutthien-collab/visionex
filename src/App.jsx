@@ -48,14 +48,14 @@ export default function App() {
   const [animalOv, setAnimalOv] = useState(() => loadJSON(LS.animals, EMPTY_OV));
   const [cameraOv, setCameraOv] = useState(() => loadJSON(LS.cameras, EMPTY_OV));
   // The app starts EMPTY: the sample zoo (ANIMALS / CAMERAS from mock.js) is only loaded on request via loadDemo()
-  // First visit (nothing saved yet): start with 9 example animals in 9 zones + their cameras so the app is not empty.
+  // First visit (nothing saved yet): start with 12 example animals in 12 zones + their cameras so the app is not empty.
   // "Remove all" clears them and remembers that choice.
-  const STARTER = ['giraffe', 'zebra', 'elephant', 'lion', 'tiger', 'monkey', 'penguin', 'otter', 'hippo'];
+  const STARTER = ['giraffe', 'zebra', 'elephant', 'lion', 'tiger', 'monkey', 'penguin', 'otter', 'hippo', 'flamingo', 'crocodile', 'kangaroo'];
   let firstVisit = !localStorage.getItem(LS.animals);
-  // Visitors who still have the old untouched 3-animal starter get the full 9-zone starter once
+  // Visitors who still have an older untouched starter (3 or 9 animals) get the full 12-zone starter once
   const SEED_KEY = 'visionex-seed';
-  if (!firstVisit && localStorage.getItem(SEED_KEY) !== '2') { try { const ov = JSON.parse(localStorage.getItem(LS.animals)); const ids = (ov.added || []).map(a => a.id); const untouched = !Object.keys(ov.edits || {}).length && ids.length <= 3 && ids.every(id => ['giraffe', 'elephant', 'lion'].includes(id)) && (ov.added || []).every(a => a.photo === undefined || a.photo === ''); if (untouched && ids.length > 0) { localStorage.removeItem(LS.animals); localStorage.removeItem(LS.cameras); } } catch { /* keep whatever is there */ } }
-  localStorage.setItem(SEED_KEY, '2');
+  if (!firstVisit && localStorage.getItem(SEED_KEY) !== '3') { try { const ov = JSON.parse(localStorage.getItem(LS.animals)); const ids = (ov.added || []).map(a => a.id); const untouched = !Object.keys(ov.edits || {}).length && !(ov.removed || []).length && ids.length < 12 && ids.every(id => STARTER.includes(id)) && (ov.added || []).every(a => a.photo === undefined || a.photo === ''); if (untouched && ids.length > 0) { localStorage.removeItem(LS.animals); localStorage.removeItem(LS.cameras); } } catch { /* keep whatever is there */ } }
+  localStorage.setItem(SEED_KEY, '3');
   firstVisit = !localStorage.getItem(LS.animals);
   const starterOv = () => ({ edits: {}, added: ANIMALS.filter(a => STARTER.includes(a.id)).map(a => ({ ...a })), removed: [] });
   const starterCamOv = () => ({ edits: {}, added: CAMERAS.filter(c => ANIMALS.filter(a => STARTER.includes(a.id)).some(a => a.camera === c.id)).map(c => ({ ...c })), removed: [] });
