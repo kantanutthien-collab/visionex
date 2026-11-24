@@ -3,16 +3,23 @@ import { camSrc, camAspect } from '../data/photos.js';
 
 const FEED = 16 / 9;
 // The photo is letter-boxed inside the 16:9 feed; this returns the photo's rectangle in feed percent.
-export function fitRect(aspect) {
-  if (aspect >= FEED) { const h = FEED / aspect * 100; return { left: 0, top: (100 - h) / 2, width: 100, height: h }; }
-  const w = aspect / FEED * 100; return { left: (100 - w) / 2, top: 0, width: w, height: 100 };
+export function fitRect(aspect, feed = FEED) {
+  if (aspect >= feed) { const h = feed / aspect * 100; return { left: 0, top: (100 - h) / 2, width: 100, height: h }; }
+  const w = aspect / feed * 100; return { left: (100 - w) / 2, top: 0, width: w, height: 100 };
+}
+// fill mode: the feed takes whatever size its parent gives it, so measure its real shape
+function useAspect(on) {
+  const ref = React.useRef(null); const [a, setA] = React.useState(FEED);
+  React.useEffect(() => { if (!on || !ref.current) return; const ro = new ResizeObserver(([e]) => { const { width, height } = e.contentRect; if (width > 0 && height > 0) setA(width / height); }); ro.observe(ref.current); return () => ro.disconnect(); }, [on]);
+  return [ref, a];
 }
 
 // cam: entry from CAMERAS. label(animal, box) -> { color, node }. children render on top (overlays, scan HUD).
-export default function CamFeed({ cam, animals, label, children, className = '' }) {
-  const r = fitRect(camAspect(cam)), src = camSrc(cam);
+export default function CamFeed({ cam, animals, label, children, className = '', fill = false }) {
+  const [ref, feed] = useAspect(fill);
+  const r = fitRect(camAspect(cam), fill ? feed : FEED), src = camSrc(cam);
   return (
-    <div className={`relative aspect-video overflow-hidden bg-[#0B1A2E] ${className}`}>
+    <div ref={ref} className={`relative ${fill ? 'w-full h-full' : 'aspect-video'} overflow-hidden bg-[#0B1A2E] ${className}`}>
       {cam.stream ? <>
         <div className="absolute inset-0 bg-[#0B1A2E]" />
         <img src={cam.stream} alt={cam.name.en} className="absolute inset-0 w-full h-full object-contain" />

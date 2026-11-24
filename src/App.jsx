@@ -345,7 +345,7 @@ export default function App() {
           <span className="text-sm font-bold whitespace-nowrap">{t.prOpenAlerts} →</span>
         </button>); })()}
       <main className={`flex-1 w-full max-w-[1400px] mx-auto p-4 md:p-6 flex flex-col gap-5 md:gap-6 min-w-0 print:p-0 ${mobile ? 'pb-24' : ''}`}>
-        <div className="flex items-center gap-3 -mb-1"><span className="w-10 h-10 rounded-xl grid place-items-center text-white shadow-md flex-none" style={{ background: `linear-gradient(135deg, ${pageColor}, ${pageColor}B3)` }}>{PageIcon && <PageIcon size={20} />}</span><div className="min-w-0"><div className="text-[20px] md:text-[22px] font-bold leading-tight" style={{ color: pageColor }}>{titles[page]?.[0]}</div>{titles[page]?.[1] && <div className="text-[12px] text-muted leading-tight truncate">{titles[page][1]}</div>}</div></div>
+        {page !== 'overview' && <div className="flex items-center gap-3 -mb-1"><span className="w-10 h-10 rounded-xl grid place-items-center text-white shadow-md flex-none" style={{ background: `linear-gradient(135deg, ${pageColor}, ${pageColor}B3)` }}>{PageIcon && <PageIcon size={20} />}</span><div className="min-w-0"><div className="text-[20px] md:text-[22px] font-bold leading-tight" style={{ color: pageColor }}>{titles[page]?.[0]}</div>{titles[page]?.[1] && <div className="text-[12px] text-muted leading-tight truncate">{titles[page][1]}</div>}</div></div>}
         <Page {...ctx} />
       </main>
       {mobile && <nav className="fixed bottom-0 inset-x-0 z-20 bg-gradient-to-r from-navy to-[#173A63] grid grid-cols-3 gap-1 px-2 py-1.5 shadow-[0_-6px_20px_rgba(15,42,74,.25)] print:hidden"><i className="motif-light" style={{ opacity: .1 }} />{CATS_VIS.map(c => <CatTab key={c[0]} c={c} big />)}</nav>}
