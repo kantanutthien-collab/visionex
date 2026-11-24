@@ -24,7 +24,7 @@ export default function CamFeed({ cam, animals, label, children, className = '',
         <div className="absolute inset-0 bg-[#0B1A2E]" />
         <img src={cam.stream} alt={cam.name.en} className="absolute inset-0 w-full h-full object-contain" />
       </> : <>
-        <img src={src} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-50" />
+        <img src={src} alt="" aria-hidden className={`absolute inset-0 w-full h-full object-cover scale-110 ${fill ? 'blur-md opacity-90 brightness-90' : 'blur-2xl opacity-50'}`} />
         <img src={src} alt={cam.name.en} className="absolute inset-0 w-full h-full object-contain" />
       </>}
       <div className="absolute inset-0 pointer-events-none bg-[repeating-linear-gradient(0deg,rgba(0,0,0,.07)_0_1px,transparent_1px_3px)]" />
